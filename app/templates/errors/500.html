@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('500 - Error interno') }}{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 60px 24px;">
+    <div class="panel" style="max-width: 480px; margin: 0 auto;">
+        <h1 style="font-size: 72px; margin: 0; color: var(--rojo);">500</h1>
+        <h2>{{ _('Error del servidor') }}</h2>
+        <p>{{ _('Lo sentimos, algo salió mal. Estamos trabajando para solucionarlo.') }}</p>
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary">{{ _('Volver al inicio') }}</a>
+    </div>
+</div>
+{% endblock %}

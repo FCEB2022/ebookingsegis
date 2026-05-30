@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Contactar Anunciante') }} - {{ oferta.titulo }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1.8fr;
+        gap: 40px;
+        align-items: start;
+    }
+    @media (max-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    /* Left Panel: Property Summary */
+    .property-summary-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        border: 1px solid var(--gris-100);
+        padding: 24px;
+    }
+    .summary-title {
+        font-size: 14px;
+        text-transform: uppercase;
+        color: var(--gris-600);
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+        font-weight: 600;
+    }
+    .summary-image {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 12px;
+        margin-bottom: 16px;
+    }
+    .summary-prop-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+    .summary-price {
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--verde);
+        margin-bottom: 12px;
+    }
+    .summary-meta {
+        font-size: 14px;
+        color: var(--gris-600);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        border-bottom: 1px solid var(--gris-200);
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+    }
+
+    /* Trust indicators */
+    .trust-indicator {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-bottom: 14px;
+        font-size: 13.5px;
+        color: #4b5563;
+    }
+    .trust-indicator svg {
+        color: var(--azul);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    /* Right Panel: Form Styling */
+    .contact-form-panel {
+        background: white;
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: 1px solid var(--gris-100);
+    }
+    .form-title {
+        font-size: 24px;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 8px;
+    }
+    .form-subtitle {
+        font-size: 14px;
+        color: var(--gris-600);
+        margin-bottom: 32px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--gris-300);
+        border-radius: 12px;
+        font-size: 15px;
+        color: #1f2937;
+        background: #f9fafb;
+        transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+        border-color: var(--azul);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(58, 117, 196, 0.1);
+        outline: none;
+    }
+    .date-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+    .field-error {
+        color: var(--rojo);
+        font-size: 13px;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <div class="contact-grid">
+        
+        <!-- Left Side: Property preview -->
+        <aside class="property-summary-card">
+            <h2 class="summary-title">{{ _('Estás contactando por:') }}</h2>
+            
+            {% set imagenes = oferta.get_imagenes() %}
+            {% if imagenes %}
+            <img src="{{ url_for('static', filename='uploads/' + imagenes[0]) }}" alt="{{ oferta.titulo }}" class="summary-image">
+            {% else %}
+            <div style="height: 180px; border-radius: 12px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--gris-400);">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+            </div>
+            {% endif %}
+
+            <h3 class="summary-prop-title">{{ oferta.titulo }}</h3>
+            <div class="summary-price">{{ oferta.precio | currency }}</div>
+            <div class="summary-meta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>{{ oferta.ciudad }}</span>
+            </div>
+
+            <!-- Trust Badges -->
+            <div style="margin-top: 24px;">
+                <div class="trust-indicator">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span>{{ _('Protección de datos garantizada de acuerdo a las políticas de seguridad de EquaHome.') }}</span>
+                </div>
+                <div class="trust-indicator">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22 11.08 12 19 9 11"></polyline>
+                    </svg>
+                    <span>{{ _('Anuncio verificado por el equipo de administración.') }}</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Side: Contact Form -->
+        <main class="contact-form-panel">
+            <h1 class="form-title">{{ _('Formulario de Contacto') }}</h1>
+            <p class="form-subtitle">{{ _('Envía tus datos y el anunciante se pondrá en contacto contigo lo antes posible.') }}</p>
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label class="form-label" for="nombre">{{ form.nombre.label.text }}</label>
+                    {{ form.nombre(class="form-control", placeholder=_('Escribe tu nombre...')) }}
+                    {% if form.nombre.errors %}
+                        {% for error in form.nombre.errors %}
+                            <div class="field-error">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label class="form-label" for="email">{{ form.email.label.text }}</label>
+                    {{ form.email(class="form-control", placeholder=_('correo@ejemplo.com')) }}
+                    {% if form.email.errors %}
+                        {% for error in form.email.errors %}
+                            <div class="field-error">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Phone Field -->
+                <div class="form-group">
+                    <label class="form-label" for="telefono">{{ form.telefono.label.text }}</label>
+                    {{ form.telefono(class="form-control", placeholder=_('Ej. +240 222 333 444')) }}
+                    {% if form.telefono.errors %}
+                        {% for error in form.telefono.errors %}
+                            <div class="field-error">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Message Field -->
+                <div class="form-group">
+                    <label class="form-label" for="mensaje">{{ form.mensaje.label.text }}</label>
+                    {{ form.mensaje(class="form-control", rows="5", placeholder=_('Hola, estoy interesado en esta propiedad y me gustaría obtener más información...')) }}
+                    {% if form.mensaje.errors %}
+                        {% for error in form.mensaje.errors %}
+                            <div class="field-error">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <span>{{ error }}</span>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <!-- Date fields (Only for rentals) -->
+                {% if oferta.tipo_operacion == 'alquiler' %}
+                <div class="date-row">
+                    <div class="form-group">
+                        <label class="form-label" for="fecha_entrada">{{ form.fecha_entrada.label.text }} ({{ _('opcional') }})</label>
+                        {{ form.fecha_entrada(class="form-control", type="date") }}
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="fecha_salida">{{ form.fecha_salida.label.text }} ({{ _('opcional') }})</label>
+                        {{ form.fecha_salida(class="form-control", type="date") }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Action buttons -->
+                <div style="display: flex; gap: 16px; margin-top: 32px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">{{ _('Enviar Mensaje') }}</button>
+                    <a href="{{ url_for('main.oferta_detalle', id=oferta.id) }}" class="btn btn-ghost" style="flex: 1; text-align: center;">
+                        {{ _('Volver') }}
+                    </a>
+                </div>
+                
+                {% if whatsapp_link %}
+                <div style="margin-top: 24px; text-align: center; color: var(--gris-500); font-size: 14px; position: relative;">
+                    <hr style="position: absolute; top: 10px; width: 100%; z-index: 0; border: 0; border-top: 1px solid var(--gris-200);">
+                    <span style="background: white; padding: 0 16px; position: relative; z-index: 1;">{{ _('O si lo prefieres') }}</span>
+                </div>
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn text-white mt-4" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; font-weight: 600; border-radius: 12px; padding: 12px; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(37, 211, 102, 0.3)';" onmouseout="this.style.transform='none'; this.style.boxShadow='none';">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    {{ _('Contactar directamente por WhatsApp') }}
+                </a>
+                {% endif %}
+            </form>
+        </main>
+        
+    </div>
+</div>
+{% endblock %}

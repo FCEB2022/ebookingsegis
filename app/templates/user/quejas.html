@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Quejas - {{ app_name }}{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Mis Quejas - {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 900px;">
+    <h1>{{ _('Mis Quejas') }}</h1>
+
+    <div class="panel" style="margin-bottom: 24px;">
+        <h3>{{ _('Nueva Queja') }}</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.titulo.label }}
+                {{ form.titulo(class="form-control") }}
+                {% if form.titulo.errors %}
+                {% for error in form.titulo.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.categoria.label }}
+                {{ form.categoria(class="form-control") }}
+                {% if form.categoria.errors %}
+                {% for error in form.categoria.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.descripcion.label }}
+                {{ form.descripcion(class="form-control", rows="4") }}
+                {% if form.descripcion.errors %}
+                {% for error in form.descripcion.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.adjunto.label }}
+                {{ form.adjunto(class="form-control") }}
+                <small style="color: var(--gris-600);">{{ _('Formatos: JPG, PNG, PDF (máx 16MB)') }}</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">{{ _('Enviar Queja') }}</button>
+        </form>
+    </div>
+
+    <!-- Historial de quejas -->
+    <h2>{{ _('Mis Quejas Enviadas') }}</h2>
+
+    {% if quejas %}
+    <div class="panel">
+        {% for queja in quejas %}
+        <div style="padding: 16px; border-bottom: 1px solid var(--gris-200);">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                    <h3 style="margin: 0 0 8px;">{{ queja.titulo }}</h3>
+                    <div class="meta">{{ queja.fecha_creacion.strftime('%d/%m/%Y') }} · {{ queja.categoria }}</div>
+                </div>
+                <span class="status {% if queja.estado == 'resuelto' %}ok{% else %}pend{% endif %}">
+                    {{ queja.estado }}
+                </span>
+            </div>
+            <p style="margin: 12px 0;">{{ queja.descripcion }}</p>
+            {% if queja.respuesta_admin %}
+            <div style="background: var(--gris-100); padding: 12px; border-radius: 8px; margin-top: 12px;">
+                <strong>{{ _('Respuesta del administrador:') }}</strong>
+                <p style="margin: 8px 0 0;">{{ queja.respuesta_admin }}</p>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="panel" style="text-align: center; padding: 48px;">
+        <p>{{ _('No has enviado ninguna queja todavía.') }}</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_pagination %}
+
+{% block title %}Gestión de Quejas - {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="container">
+    <h1>{{ _('Gestión de Quejas') }}</h1>
+
+    <!-- Filtros -->
+    <div class="panel" style="margin-bottom: 24px;">
+        <form method="GET">
+            <div style="display: flex; gap: 12px; align-items: end;">
+                <div class="field">
+                    <label>Estado</label>
+                    <select name="estado" class="form-control">
+        </form>
+    </div>
+    </div>
+    {% endif %}
+    </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </div>
+
+    {{ render_pagination(pagination, 'admin.quejas') if pagination }}
+    {% else %}
+    <div class="panel" style="text-align: center; padding: 48px;">
+        <h3>No hay quejas</h3>
+        <p>Las quejas de usuarios aparecerán aquí.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

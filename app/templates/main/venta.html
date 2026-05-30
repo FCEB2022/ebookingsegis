@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Venta de Propiedades') }} - {{ app_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .filter-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
+
+    .filter-section.hidden {
+        display: none;
+    }
+
+    .filter-group {
+        margin-bottom: 15px;
+    }
+
+    .filter-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .filter-input,
+    .filter-select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .filter-checkboxes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .filter-checkboxes label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 14px;
+    }
+
+    .range-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .btn-filter {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+        .filter-checkboxes {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="listings-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header-content">
+            <h1>{{ _('Venta de Propiedades') }}</h1>
+            <p>{{ pagination.total if pagination else 0 }} {{ _('propiedades disponibles') }}</p>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="listings-container">
+        <!-- Advanced Filters Sidebar -->
+        <aside class="filters-sidebar" id="filter-panel">
+            <div class="filter-header">
+                <h3>{{ _('Filtrar resultados') }}</h3>
+                <button type="button" class="filters-clear" id="clear-filters">
+                    {{ _('Limpiar') }}
+                </button>
+            </div>
+
+            <form method="get" id="search-form" class="filters-form">
+                <!-- ===== FILTROS GENERALES ===== -->
+
+                <!-- Ciudad -->
+                <div class="filter-group">
+                    <label class="filter-label">{{ _('Ciudad') }}</label>
+                    {{ form.ciudad(class="filter-select") }}
+                </div>
+
+                <!-- Barrio -->
+                <div class="filter-group">
+                    <label class="filter-label">{{ _('Barrio / Zona') }}</label>
+                    {{ form.barrio(class="filter-input", placeholder=_('Escribir barrio...')) }}
+                </div>
+
+                <!-- Tipo de propiedad -->
+                <div class="filter-group">
+                    <label class="filter-label">{{ _('Tipo de propiedad') }}</label>
+                    {{ form.tipo_propiedad(class="filter-select", id="tipo_propiedad") }}
+                </div>
+
+                <!-- Estado de la propiedad -->
+                <div class="filter-group">
+                    <label class="filter-label">{{ _('Estado') }}</label>
+                    {{ form.estado_propiedad(class="filter-select") }}
+                </div>
+
+                <!-- Rango de precio -->
+                <div class="filter-group">
+                    <label class="filter-label">{{ _('Precio (FCFA)') }}</label>
+                    <div class="range-inputs">
+                        {{ form.precio_min(class="filter-input", placeholder=_('Mínimo')) }}
+                        {{ form.precio_max(class="filter-input", placeholder=_('Máximo')) }}
+                    </div>
+                </div>
+
+                <!-- Rango de tamaño -->
+                <div class="filter-group">
+                    <label class="filter-label">{{ _('Tamaño (m²)') }}</label>
+                    <div class="range-inputs">
+                        {{ form.tamano_min(class="filter-input", placeholder=_('Mínimo')) }}
+                        {{ form.tamano_max(class="filter-input", placeholder=_('Máximo')) }}
+                    </div>
+                </div>
+
+                <!-- ===== FILTROS VIVIENDA ===== -->
+                <div id="filtros_vivienda" class="filter-section hidden">
+                    <h4 style="margin-top: 0; color: #10b981;">{{ _('Filtros de Vivienda') }}</h4>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Tipo de vivienda') }}</label>
+                        {{ form.subtipo_vivienda(class="filter-select") }}
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Habitaciones') }}</label>
+                        {{ form.habitaciones(class="filter-select") }}
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Baños') }}</label>
+                        {{ form.banos(class="filter-select") }}
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Características') }}</label>
+                        <div class="filter-checkboxes">
+                            {% for subfield in form.caracteristicas_vivienda %}
+                            <label>{{ subfield() }} {{ subfield.label.text }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== FILTROS LOCALES ===== -->
+                <div id="filtros_locales" class="filter-section hidden">
+                    <h4 style="margin-top: 0; color: #10b981;">{{ _('Filtros de Locales y Naves') }}</h4>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Tipología') }}</label>
+                        {{ form.tipologia_local(class="filter-select", id="tipologia_local") }}
+                    </div>
+
+                    <div id="caracteristicas_local_container" class="filter-group hidden">
+                        <label class="filter-label">{{ _('Características') }}</label>
+                        <div class="filter-checkboxes">
+                            {% for subfield in form.caracteristicas_local %}
+                            <label>{{ subfield() }} {{ subfield.label.text }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== FILTROS OFICINAS ===== -->
+                <div id="filtros_oficinas" class="filter-section hidden">
+                    <h4 style="margin-top: 0; color: #10b981;">{{ _('Filtros de Oficinas') }}</h4>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Tipología') }}</label>
+                        {{ form.tipologia_oficina(class="filter-select") }}
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Características') }}</label>
+                        <div class="filter-checkboxes">
+                            {% for subfield in form.caracteristicas_oficina %}
+                            <label>{{ subfield() }} {{ subfield.label.text }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== FILTROS TERRENOS ===== -->
+                <div id="filtros_terrenos" class="filter-section hidden">
+                    <h4 style="margin-top: 0; color: #10b981;">{{ _('Filtros de Terrenos') }}</h4>
+
+                    <div class="filter-group">
+                        <label class="filter-label">{{ _('Características') }}</label>
+                        <div class="filter-checkboxes">
+                            {% for subfield in form.caracteristicas_terreno %}
+                            <label>{{ subfield() }} {{ subfield.label.text }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply Button -->
+                <button type="submit" class="btn btn-primary btn-filter">
+                    {{ _('Aplicar filtros') }}
+                </button>
+            </form>
+        </aside>
+
+        <!-- Properties Grid -->
+        <div class="listings-main">
+            <!-- Mobile filter toggle -->
+            <button id="toggle-filters" class="btn btn-secondary" style="display: none; margin-bottom: 20px;">
+                {{ _('Mostrar filtros') }}
+            </button>
+
+            {% if ofertas %}
+            <div class="properties-grid" id="propertiesGrid">
+                {% for oferta in ofertas %}
+                <div class="property-card">
+                    <div class="property-image">
+                        {% if oferta.get_imagenes() %}
+                        <img src="{{ url_for('static', filename='uploads/' + oferta.get_imagenes()[0]) }}"
+                            alt="{{ oferta.titulo }}">
+                        {% else %}
+                        <div class="property-image-placeholder"></div>
+                        {% endif %}
+
+                        {% if oferta.destacado %}
+                        <span class="property-badge featured">{{ _('Destacado') }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="property-content">
+                        <div class="property-price">{{ oferta.precio | currency }}</div>
+                        <h3 class="property-title">{{ oferta.titulo }}</h3>
+                        <p class="property-location">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            {{ oferta.ciudad or oferta.ubicacion }}
+                        </p>
+
+                        {% set caract = oferta.get_caracteristicas() %}
+                        <div class="property-features">
+                            {% if caract.get('habitaciones') %}
+                            <span class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                </svg>
+                                {{ caract.habitaciones }} {{ _('hab') }}
+                            </span>
+                            {% endif %}
+                            {% if caract.get('m2') %}
+                            <span class="feature">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                </svg>
+                                {{ caract.m2 }} m²
+                            </span>
+                            {% endif %}
+                        </div>
+
+                        <a href="{{ url_for('main.oferta_detalle', id=oferta.id) }}" class="property-link">
+                            {{ _('Ver detalles') }}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if pagination %}
+            {{ render_pagination(pagination, 'main.venta') }}
+            {% endif %}
+
+            {% else %}
+            <!-- Empty State -->
+            <div class="empty-state">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <h3>{{ _('No se encontraron propiedades') }}</h3>
+                <p>{{ _('Intenta ajustar los filtros de búsqueda.') }}</p>
+                <a href="{{ url_for('main.venta') }}" class="btn btn-primary">{{ _('Ver todas') }}</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/search_filters.js') }}"></script>
+{% endblock %}

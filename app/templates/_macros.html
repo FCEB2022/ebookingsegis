@@ -1,0 +1,64 @@
+{% macro render_oferta_card(oferta, show_favorito=false) %}
+<div class="card">
+    <div class="img" {% if oferta.get_imagenes()
+        %}style="background-image: url('{{ url_for('static', filename='uploads/' + oferta.get_imagenes()[0]) }}')" {%
+        endif %}>
+        {% if oferta.destacado %}
+        <span class="badge">{{ _('Destacado') }}</span>
+        {% endif %}
+        {% if oferta.tipo_operacion == 'alquiler' and not oferta.destacado %}
+        <span class="badge" style="background: var(--azul);">{{ _('Alquiler') }}</span>
+        {% endif %}
+    </div>
+    <div class="body">
+        <div class="price">{{ oferta.precio | currency }}</div>
+        <div><b>{{ oferta.titulo }}</b></div>
+        <div class="meta">{{ oferta.ubicacion }} · {{ oferta.tipo_propiedad }}</div>
+        {% set caract = oferta.get_caracteristicas() %}
+        {% if caract %}
+        <div class="meta">
+            {% if caract.get('habitaciones') %}{{ caract.habitaciones }} {{ _('hab') }} · {% endif %}
+            {% if caract.get('banos') %}{{ caract.banos }} {{ _('baños') }} · {% endif %}
+            {% if caract.get('m2') %}{{ caract.m2 }} m²{% endif %}
+        </div>
+        <div class="tags">
+            {% if caract.get('parking') %}<span class="tag">{{ _('Parking') }}</span>{% endif %}
+            {% if caract.get('amueblado') %}<span class="tag">{{ _('Amueblado') }}</span>{% endif %}
+            {% if caract.get('mascotas') %}<span class="tag">{{ _('Mascotas') }}</span>{% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="actions">
+        <a href="{{ url_for('main.oferta_detalle', id=oferta.id) }}" class="mini primary">{{ _('Ver detalles') }}</a>
+        {% if show_favorito and current_user.is_authenticated %}
+        <button class="mini" onclick="toggleFavorite({{ oferta.id }}, this)">🤍</button>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro render_pagination(pagination, endpoint) %}
+{% if pagination.pages > 1 %}
+<div class="pagination">
+    {% if pagination.has_prev %}
+    <a href="{{ url_for(endpoint, page=pagination.prev_num, **request.args) }}">← {{ _('Anterior') }}</a>
+    {% endif %}
+
+    {% for page_num in pagination.iter_pages() %}
+    {% if page_num %}
+    {% if page_num != pagination.page %}
+    <a href="{{ url_for(endpoint, page=page_num, **request.args) }}">{{ page_num }}</a>
+    {% else %}
+    <span class="active">{{ page_num }}</span>
+    {% endif %}
+    {% else %}
+    <span>...</span>
+    {% endif %}
+    {% endfor %}
+
+    {% if pagination.has_next %}
+    <a href="{{ url_for(endpoint, page=pagination.next_num, **request.args) }}">{{ _('Siguiente') }} →</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endmacro %}

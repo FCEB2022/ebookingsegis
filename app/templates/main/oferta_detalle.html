@@ -1,0 +1,715 @@
+{% extends "base.html" %}
+
+{% block title %}{{ oferta.titulo }} - {{ app_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Premium Detail Layout */
+    .detail-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 14px;
+        color: var(--gris-600);
+        margin-bottom: 24px;
+    }
+    .breadcrumbs a {
+        color: var(--azul);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .breadcrumbs a:hover {
+        color: var(--azul-dark);
+        text-decoration: underline;
+    }
+
+    /* Main Title Section */
+    .detail-header {
+        margin-bottom: 32px;
+    }
+    .detail-badges {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    .badge-detail {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    .badge-detail.operation {
+        background-color: rgba(58, 117, 196, 0.1);
+        color: var(--azul);
+    }
+    .badge-detail.property-type {
+        background-color: rgba(0, 158, 73, 0.1);
+        color: var(--verde);
+    }
+    .badge-detail.featured {
+        background: linear-gradient(135deg, var(--rojo), #ff4b5c);
+        color: white;
+    }
+    .detail-title {
+        font-size: 32px;
+        font-weight: 800;
+        color: #1f2937;
+        line-height: 1.2;
+        margin: 8px 0;
+    }
+    .detail-location {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--gris-600);
+        font-size: 16px;
+    }
+
+    /* Gallery Grid System */
+    .premium-gallery {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 16px;
+        margin-bottom: 40px;
+        height: 480px;
+    }
+    @media (max-width: 768px) {
+        .premium-gallery {
+            grid-template-columns: 1fr;
+            height: 300px;
+        }
+        .gallery-thumbnails {
+            display: none !important;
+        }
+    }
+    .gallery-main {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .gallery-main img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .gallery-main img:hover {
+        transform: scale(1.03);
+    }
+    .gallery-thumbnails {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        gap: 16px;
+        height: 100%;
+    }
+    .thumb-container {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        cursor: pointer;
+        position: relative;
+    }
+    .thumb-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .thumb-container:hover img {
+        transform: scale(1.05);
+    }
+    .more-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        font-weight: 700;
+        transition: background 0.2s;
+    }
+    .thumb-container:hover .more-overlay {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Grid layout for Main and Sidebar */
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+        align-items: start;
+    }
+    @media (max-width: 1024px) {
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Sections */
+    .detail-section {
+        background: white;
+        border-radius: 20px;
+        padding: 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        border: 1px solid var(--gris-100);
+    }
+    .detail-section h2 {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 24px;
+        position: relative;
+        padding-bottom: 8px;
+    }
+    .detail-section h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--azul);
+        border-radius: 2px;
+    }
+
+    /* Core Info Panel */
+    .features-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 16px;
+        background: #f9fafb;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 32px;
+        border: 1px solid var(--gris-200);
+    }
+    .strip-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+    }
+    .strip-item svg {
+        color: var(--azul);
+    }
+    .strip-item .value {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1f2937;
+    }
+    .strip-item .label {
+        font-size: 12px;
+        color: var(--gris-600);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Description */
+    .description-text {
+        font-size: 16px;
+        color: #4b5563;
+        line-height: 1.8;
+        white-space: pre-line;
+    }
+
+    /* Amenities Grid */
+    .amenities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 16px;
+    }
+    .amenity-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        color: #374151;
+    }
+    .amenity-item svg {
+        color: var(--verde);
+        flex-shrink: 0;
+    }
+
+    /* Map Placeholders */
+    .map-wrapper {
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        border: 1px solid var(--gris-200);
+    }
+    #map {
+        height: 350px;
+        width: 100%;
+    }
+
+    /* STICKY SIDEBAR CARD */
+    .detail-sidebar {
+        position: sticky;
+        top: 100px;
+    }
+    .pricing-card {
+        background: white;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+        border: 1px solid var(--gris-100);
+        margin-bottom: 24px;
+    }
+    .price-value {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--verde);
+        margin-bottom: 4px;
+    }
+    .price-period {
+        font-size: 14px;
+        color: var(--gris-600);
+        margin-bottom: 20px;
+        display: block;
+    }
+    .favorite-toggle-btn {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        background: #f3f4f6;
+        border: none;
+        font-weight: 600;
+        color: #374151;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        transition: background 0.2s, color 0.2s;
+    }
+    .favorite-toggle-btn:hover {
+        background: #e5e7eb;
+    }
+    .favorite-toggle-btn.favorited {
+        background: rgba(210, 16, 52, 0.1);
+        color: var(--rojo);
+    }
+
+    /* Contact Details of Owner */
+    .advertiser-info {
+        background: #f9fafb;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 24px;
+        border: 1px solid var(--gris-200);
+    }
+    .advertiser-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+    .advertiser-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: var(--azul);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 18px;
+    }
+    .advertiser-name {
+        font-weight: 700;
+        color: #1f2937;
+        font-size: 16px;
+    }
+    .advertiser-role {
+        font-size: 12px;
+        color: var(--gris-600);
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+    
+    /* Related properties */
+    .related-section {
+        margin-top: 56px;
+    }
+    .related-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 24px;
+    }
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 24px;
+    }
+    .related-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+        border: 1px solid var(--gris-100);
+        transition: transform 0.2s;
+    }
+    .related-card:hover {
+        transform: translateY(-4px);
+    }
+    .related-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .related-card-content {
+        padding: 20px;
+    }
+    .related-card-price {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--verde);
+        margin-bottom: 6px;
+    }
+    .related-card-title {
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="detail-container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <a href="{{ url_for('main.index') }}">{{ _('Inicio') }}</a>
+        <span>/</span>
+        {% if oferta.tipo_operacion == 'venta' %}
+        <a href="{{ url_for('main.venta') }}">{{ _('Comprar') }}</a>
+        {% else %}
+        <a href="{{ url_for('main.alquiler') }}">{{ _('Alquilar') }}</a>
+        {% endif %}
+        <span>/</span>
+        <span style="color: var(--gris-700);">{{ oferta.titulo }}</span>
+    </div>
+
+    <!-- Header Details -->
+    <div class="detail-header">
+        <div class="detail-badges">
+            <span class="badge-detail operation">{{ _(oferta.tipo_operacion) }}</span>
+            <span class="badge-detail property-type">{{ _(oferta.tipo_propiedad) }}</span>
+            {% if oferta.destacado %}
+            <span class="badge-detail featured">{{ _('Destacado') }}</span>
+            {% endif %}
+        </div>
+        <h1 class="detail-title">{{ oferta.titulo }}</h1>
+        <div class="detail-location">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            {{ oferta.barrio }}, {{ oferta.ciudad or oferta.ubicacion }}
+        </div>
+    </div>
+
+    <!-- Gallery section -->
+    {% set imagenes = oferta.get_imagenes() %}
+    {% if imagenes %}
+    <div class="premium-gallery">
+        <div class="gallery-main">
+            <img src="{{ url_for('static', filename='uploads/' + imagenes[0]) }}" alt="{{ oferta.titulo }}" id="currentMainImg">
+        </div>
+        {% if imagenes|length > 1 %}
+        <div class="gallery-thumbnails">
+            {% for img in imagenes[1:3] %}
+            <div class="thumb-container" onclick="document.getElementById('currentMainImg').src='{{ url_for('static', filename='uploads/' + img) }}'">
+                <img src="{{ url_for('static', filename='uploads/' + img) }}" alt="Thumbnail">
+                {% if loop.index == 2 and imagenes|length > 3 %}
+                <div class="more-overlay">
+                    +{{ imagenes|length - 3 }} {{ _('más') }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="premium-gallery" style="grid-template-columns: 1fr; height: 320px; margin-bottom: 40px;">
+        <div class="gallery-main" style="background: linear-gradient(135deg, var(--gris-200), var(--gris-300)); display: flex; align-items: center; justify-content: center;">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gris-400)" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Core info layout split -->
+    <div class="detail-grid">
+        <!-- Main details -->
+        <div>
+            <!-- Core Characteristics Strip -->
+            {% set caract = oferta.get_caracteristicas() %}
+            <div class="features-strip">
+                {% if oferta.metros_cuadrados %}
+                <div class="strip-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    </svg>
+                    <span class="value">{{ oferta.metros_cuadrados }} m²</span>
+                    <span class="label">{{ _('Superficie') }}</span>
+                </div>
+                {% endif %}
+                
+                {% if caract.get('habitaciones') %}
+                <div class="strip-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    <span class="value">{{ caract.habitaciones }}</span>
+                    <span class="label">{{ _('Habitaciones') }}</span>
+                </div>
+                {% endif %}
+
+                {% if caract.get('banos') %}
+                <div class="strip-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span class="value">{{ caract.banos }}</span>
+                    <span class="label">{{ _('Baños') }}</span>
+                </div>
+                {% endif %}
+
+                {% if oferta.estado_propiedad %}
+                <div class="strip-item">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span class="value">{{ _(oferta.estado_propiedad) }}</span>
+                    <span class="label">{{ _('Estado') }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Description Section -->
+            <div class="detail-section">
+                <h2>{{ _('Descripción') }}</h2>
+                <div class="description-text">{{ oferta.descripcion }}</div>
+            </div>
+
+            <!-- Amenities Section -->
+            {% set items_type = oferta.tipo_propiedad ~ '_items' %}
+            {% set active_items = caract.get(items_type, []) %}
+            {% if active_items %}
+            <div class="detail-section">
+                <h2>{{ _('Características y Equipamiento') }}</h2>
+                <div class="amenities-grid">
+                    {% for item in active_items %}
+                    <div class="amenity-item">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>{{ _(item) }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Map Section -->
+            {% if oferta.latitud and oferta.longitud %}
+            <div class="detail-section">
+                <h2>{{ _('Ubicación en el Mapa') }}</h2>
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar block -->
+        <div class="detail-sidebar">
+            <div class="pricing-card">
+                <div class="price-value">{{ oferta.precio | currency }}</div>
+                <span class="price-period">
+                    {% if oferta.tipo_operacion == 'alquiler' %}
+                    / {{ _('mes') }}
+                    {% else %}
+                    {{ _('Precio total') }}
+                    {% endif %}
+                </span>
+
+                <!-- Action Button for favorites -->
+                {% if current_user.is_authenticated %}
+                <button class="favorite-toggle-btn {% if es_favorito %}favorited{% endif %}" onclick="toggleFavorite({{ oferta.id }}, this)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span id="favText">{% if es_favorito %}{{ _('Guardado') }}{% else %}{{ _('Guardar en favoritos') }}{% endif %}</span>
+                </button>
+                {% else %}
+                <a href="{{ url_for('auth.login', next=request.path) }}" class="favorite-toggle-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span>{{ _('Guardar en favoritos') }}</span>
+                </a>
+                {% endif %}
+
+                <!-- Primary contact action -->
+                <a href="{{ url_for('main.contactar', id=oferta.id) }}" class="btn btn-primary btn-large" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    {{ _('Enviar mensaje') }}
+                </a>
+
+                <!-- WhatsApp action -->
+                {% if whatsapp_link %}
+                <a href="{{ whatsapp_link }}" target="_blank" class="btn text-white mt-3" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: #25D366; font-weight: 600; border-radius: 12px; padding: 12px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                    {{ _('Contactar por WhatsApp') }}
+                </a>
+                {% endif %}
+
+                <!-- Advertiser Details -->
+                <div class="advertiser-info">
+                    <div class="advertiser-header">
+                        <div class="advertiser-avatar">
+                            {{ oferta.propietario.nombre[0].upper() }}
+                        </div>
+                        <div>
+                            <div class="advertiser-name">{{ oferta.propietario.nombre }}</div>
+                            <div class="advertiser-role">{{ _('Anunciante') }}</div>
+                        </div>
+                    </div>
+                    {% if oferta.propietario.telefono %}
+                    <p style="font-size: 14px; margin-bottom: 8px; color: var(--gris-700); display: flex; align-items: center; gap: 8px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2v3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        {{ oferta.propietario.telefono }}
+                    </p>
+                    {% endif %}
+                </div>
+                
+                <!-- Booking Section -->
+                {% if oferta.tipo_operacion in ['booking', 'alquiler'] %}
+                <div class="booking-section mt-4 pt-4" style="border-top: 1px solid var(--gris-200);">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #1f2937;">{{ _('Reservar Alojamiento') }}</h3>
+                    {% if current_user.is_authenticated %}
+                        <form method="POST" action="{{ url_for('main.oferta_detalle', id=oferta.id) }}">
+                            {{ reserva_form.hidden_tag() }}
+                            <div class="mb-3">
+                                {{ reserva_form.fecha_inicio.label(class="form-label fw-bold", style="font-size: 14px;") }}
+                                {{ reserva_form.fecha_inicio(class="form-control" + (" is-invalid" if reserva_form.fecha_inicio.errors else "")) }}
+                                {% for error in reserva_form.fecha_inicio.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                {{ reserva_form.fecha_fin.label(class="form-label fw-bold", style="font-size: 14px;") }}
+                                {{ reserva_form.fecha_fin(class="form-control" + (" is-invalid" if reserva_form.fecha_fin.errors else "")) }}
+                                {% for error in reserva_form.fecha_fin.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="mb-3">
+                                {{ reserva_form.notas.label(class="form-label fw-bold", style="font-size: 14px;") }}
+                                {{ reserva_form.notas(class="form-control" + (" is-invalid" if reserva_form.notas.errors else ""), rows=2) }}
+                                {% for error in reserva_form.notas.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <button type="submit" name="reserva_submit" class="btn text-white w-100 py-2 mt-2" style="background: var(--verde); border-radius: 12px; font-weight: 600;">
+                                {{ _('Solicitar Reserva') }}
+                            </button>
+                        </form>
+                    {% else %}
+                        <div class="text-center p-3" style="background: #f9fafb; border-radius: 12px; border: 1px solid var(--gris-200);">
+                            <p style="font-size: 14px; margin-bottom: 12px; color: var(--gris-600);">{{ _('Inicia sesión para realizar una reserva') }}</p>
+                            <a href="{{ url_for('auth.login', next=request.path) }}" class="btn btn-outline-primary btn-sm w-100" style="border-radius: 8px;">{{ _('Iniciar Sesión') }}</a>
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Related properties -->
+    {% if relacionadas %}
+    <div class="related-section">
+        <h2 class="related-title">{{ _('Propiedades similares') }}</h2>
+        <div class="related-grid">
+            {% for rel in relacionadas %}
+            <div class="related-card">
+                {% set rel_imgs = rel.get_imagenes() %}
+                {% if rel_imgs %}
+                <img src="{{ url_for('static', filename='uploads/' + rel_imgs[0]) }}" alt="{{ rel.titulo }}">
+                {% else %}
+                <div style="height: 200px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; color: var(--gris-400);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                        <polyline points="21 15 16 10 5 21"></polyline>
+                    </svg>
+                </div>
+                {% endif %}
+                <div class="related-card-content">
+                    <div class="related-card-price">{{ rel.precio | currency }}</div>
+                    <h3 class="related-card-title">{{ rel.titulo }}</h3>
+                    <p style="font-size: 13px; color: var(--gris-600); margin-bottom: 12px; display: flex; align-items: center; gap: 4px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        {{ rel.ciudad }}
+                    </p>
+                    <a href="{{ url_for('main.oferta_detalle', id=rel.id) }}" class="btn btn-secondary btn-sm" style="display: block; text-align: center;">
+                        {{ _('Ver detalles') }}
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if oferta.latitud and oferta.longitud %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        initMap('map', {{ oferta.latitud }}, {{ oferta.longitud }});
+    });
+</script>
+{% endif %}
+{% endblock %}

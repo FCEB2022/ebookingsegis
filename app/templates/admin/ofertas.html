@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_pagination %}
+
+{% block title %}{{ _('Gestión de Ofertas') }} - {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h1 style="display: flex; align-items: center; gap: 12px;">
+            {{ _('Buscador de ofertas') }}
+            <span class="badge badge-primary" style="font-size: 0.4em; padding: 4px 12px;">Equahome - Backoffice</span>
+        </h1>
+    </div>
+
+    <!-- Filtros Superiores (Mockup Style) -->
+    <div class="panel" style="margin-bottom: 24px; padding: 24px; border-radius: 16px;">
+        <form method="GET" id="search-form">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; align-items: end;">
+                <div class="field">
+                    <label style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 8px; display: block;">{{
+                        _('Ubicación') }}</label>
+                    <input type="text" name="q" class="form-control" placeholder="Ciudad, barrio..."
+                        value="{{ request.args.get('q', '') }}">
+                </div>
+
+                <div class="field">
+                    <label style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 8px; display: block;">{{
+                        _('Tipo de transacción') }}</label>
+                    <select name="tipo_operacion" class="form-control">
+                        <option value="">{{ _('Todos') }}</option>
+                        <option value="venta" {% if request.args.get('tipo_operacion')=='venta' %}selected{% endif %}>{{
+                            _('Venta') }}</option>
+                        <option value="alquiler" {% if request.args.get('tipo_operacion')=='alquiler' %}selected{% endif
+                            %}>{{ _('Alquiler') }}</option>
+                        <option value="compartir" {% if request.args.get('tipo_operacion')=='compartir' %}selected{%
+                            endif %}>{{ _('Compartir') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 8px; display: block;">{{
+                        _('Tipo de propiedad') }}</label>
+                    <select name="tipo_propiedad" class="form-control">
+                        <option value="">{{ _('Todas') }}</option>
+                        <option value="vivienda" {% if request.args.get('tipo_propiedad')=='vivienda' %}selected{% endif
+                            %}>{{ _('Vivienda') }}</option>
+                        <option value="locales_naves" {% if request.args.get('tipo_propiedad')=='locales_naves'
+                            %}selected{% endif %}>{{ _('Locales y Naves') }}</option>
+                        <option value="oficinas" {% if request.args.get('tipo_propiedad')=='oficinas' %}selected{% endif
+                            %}>{{ _('Oficinas') }}</option>
+                        <option value="terrenos" {% if request.args.get('tipo_propiedad')=='terrenos' %}selected{% endif
+                            %}>{{ _('Terrenos') }}</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 8px; display: block;">{{
+                        _('Estado de la oferta') }}</label>
+                    <select name="estado" class="form-control">
+                        <option value="">{{ _('Todos') }}</option>
+                        <option value="abierta" {% if request.args.get('estado')=='abierta' %}selected{% endif %}>{{
+                            _('Abierta') }}</option>
+                        <option value="activada" {% if request.args.get('estado')=='activada' %}selected{% endif %}>{{
+                            _('Activada') }}</option>
+                        <option value="desactivada" {% if request.args.get('estado')=='desactivada' %}selected{% endif
+                            %}>{{ _('Desactivada') }}</option>
+                        <option value="caducada" {% if request.args.get('estado')=='caducada' %}selected{% endif %}>{{
+                            _('Caducada') }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <p style="color: var(--gris-500); font-size: 0.85em; margin: 0;">
+                    Consejo: combina filtros para acotar rápidamente los resultados.
+                </p>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <span style="color: var(--gris-600); font-size: 0.9em; margin-right: 12px;">Resultados filtrados: {{
+                        pagination.total if pagination else 0 }}</span>
+                    <a href="{{ url_for('admin.ofertas') }}" class="btn btn-ghost" style="padding: 8px 20px;">{{
+                        _('Limpiar filtros') }}</a>
+                    <button type="submit" class="btn btn-primary" style="padding: 10px 30px; border-radius: 20px;">{{
+                        _('Buscar') }}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Barra de Acciones Masivas y Exportación -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="btn btn-danger bulk-action" data-action="borrar"
+                style="background-color: #e57373; border: none; border-radius: 20px; padding: 6px 20px;">{{ _('Borrar')
+                }}</button>
+            <button type="button" class="btn btn-success bulk-action" data-action="activar"
+                style="background-color: #81c784; border: none; border-radius: 20px; padding: 6px 20px;">{{ _('Activar')
+                }}</button>
+            <button type="button" class="btn btn-warning bulk-action" data-action="desactivar"
+                style="background-color: #ffb74d; border: none; border-radius: 20px; padding: 6px 20px;">{{
+                _('Desactivar') }}</button>
+            <span id="selected-count" style="color: var(--gris-500); font-size: 0.9em; margin-left: 8px;">0
+                seleccionadas</span>
+        </div>
+        <div>
+            <a href="{{ url_for('admin.exportar_ofertas_csv') }}" class="btn btn-outline"
+                style="border-radius: 20px; padding: 8px 24px;">{{ _('Exportar CSV / Excel') }}</a>
+            <a href="{{ url_for('admin.oferta_nueva') }}" class="btn btn-primary"
+                style="border-radius: 20px; padding: 8px 24px; margin-left: 8px;">+ {{ _('Nueva Oferta') }}</a>
+        </div>
+    </div>
+
+    <!-- Tabla (Scroll Horizontal para muchos campos) -->
+    <div class="panel" style="overflow-x: auto; padding: 0; border-radius: 16px;">
+        <form id="bulk-form" method="POST" action="{{ url_for('admin.ofertas_bulk') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" id="bulk-action-input" value="">
+
+            <table class="table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #f8f9fa; border-bottom: 1px solid #eee;">
+                        <th style="padding: 16px;"><input type="checkbox" id="select-all"></th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Título / Nombre') }}
+                        </th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Ubicación') }}</th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Transacción') }}</th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Propiedad') }}</th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Estado') }}</th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Fecha de alta') }}
+                        </th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Baja programada') }}
+                        </th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Última mod.') }}</th>
+                        <th style="padding: 16px; text-align: left; color: var(--gris-700);">{{ _('Staff') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for oferta in ofertas %}
+                    <tr style="border-bottom: 1px solid #f1f1f1;">
+                        <td style="padding: 16px; text-align: center;">
+                            <input type="checkbox" name="ids" value="{{ oferta.id }}" class="offer-checkbox">
+                        </td>
+                        <td style="padding: 16px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <button type="button" class="btn-edit-modal" data-id="{{ oferta.id }}"
+                                    style="color: #ff7043; background: #fff; border: 1px solid #eee; padding: 4px 8px; border-radius: 50%; display: inline-flex; cursor: pointer; transition: all 0.2s;">
+                                    ✏️
+                                </button>
+                                {{ oferta.titulo[:35] }}{% if oferta.titulo|length > 35 %}...{% endif %}
+                            </div>
+                        </td>
+                        <td style="padding: 16px;">{{ oferta.ciudad or oferta.ubicacion[:20] }}</td>
+                        <td style="padding: 16px;">{{ oferta.tipo_operacion | capitalize }}</td>
+                        <td style="padding: 16px;">{{ oferta.tipo_propiedad | replace('_', ' ') | capitalize }}</td>
+                        <td style="padding: 16px;">
+                            <span class="badge-status status-{{ oferta.estado }}">
+                                {{ oferta.estado | capitalize }}
+                            </span>
+                        </td>
+                        <td style="padding: 16px; color: var(--gris-600); font-size: 0.9em;">{{
+                            oferta.fecha_creacion.strftime('%Y-%m-%d') }}</td>
+                        <td style="padding: 16px; color: var(--gris-600); font-size: 0.9em;">{{
+                            oferta.fecha_baja_programada.strftime('%Y-%m-%d') if oferta.fecha_baja_programada else '-'
+                            }}</td>
+                        <td style="padding: 16px; color: var(--gris-600); font-size: 0.9em;">{{
+                            oferta.fecha_modificacion.strftime('%Y-%m-%d') }}</td>
+                        <td style="padding: 16px; color: var(--gris-600); font-size: 0.9em;">
+                            {% set last_mod =
+                            oferta.historial.order_by(HistorialOferta.fecha_modificacion.desc()).first() if
+                            oferta.historial else none %}
+                            {{ last_mod.usuario_modificador.nombre if last_mod and last_mod.usuario_modificador else
+                            (oferta.propietario.nombre if oferta.propietario else 'System') }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" style="padding: 48px; text-align: center; color: var(--gris-400);">Crea tu
+                            primera oferta para comenzar.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+        <span style="color: var(--gris-500); font-size: 0.9em;">Mostrando {{ pagination.first }} - {{ pagination.last }}
+            de {{ pagination.total }}</span>
+        {{ render_pagination(pagination, 'admin.ofertas') if pagination }}
+    </div>
+    </div>
+
+    <!-- Modal para Edición de Oferta -->
+    <div id="edit-modal" class="modal-overlay"
+        style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; overflow-y: auto; padding: 20px;">
+        <div class="modal-content"
+            style="background: #fff; max-width: 900px; margin: 40px auto; border-radius: 16px; position: relative; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+            <div id="modal-loader" style="padding: 40px; text-align: center;">
+                <p>Cargando detalle de oferta...</p>
+            </div>
+            <div id="modal-body">
+                <!-- El contenido se cargará aquí vía AJAX -->
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .btn-edit-modal:hover {
+            transform: scale(1.15);
+            background-color: #fffaf0 !important;
+            border-color: #ffccbc !important;
+        }
+
+        .badge-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            display: inline-block;
+        }
+
+        .status-activada {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-desactivada {
+            background-color: #fbe9e7;
+            color: #c62828;
+        }
+
+        .status-abierta {
+            background-color: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status-caducada {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .status-default {
+            background-color: #eee;
+            color: #666;
+        }
+    </style>
+</section>
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin_listados.js') }}"></script>
+{% endblock %}
+{% endblock %}

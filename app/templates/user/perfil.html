@@ -1,0 +1,412 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Mi Perfil') }} - {{ app_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+    
+    /* Layout styling */
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 1fr 2.2fr;
+        gap: 32px;
+        align-items: start;
+    }
+    @media (max-width: 768px) {
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Left Sidebar: User Card info */
+    .user-card {
+        background: white;
+        border-radius: 24px;
+        padding: 32px 24px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        border: 1px solid var(--gris-100);
+    }
+    .user-avatar-large {
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--azul), var(--verde));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 36px;
+        font-weight: 800;
+        margin: 0 auto 20px;
+        box-shadow: 0 8px 24px rgba(58, 117, 196, 0.2);
+    }
+    .user-name-title {
+        font-size: 20px;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 4px;
+    }
+    .user-badge-role {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        background: rgba(58, 117, 196, 0.1);
+        color: var(--azul);
+        margin-bottom: 24px;
+    }
+    .user-meta-list {
+        text-align: left;
+        border-top: 1px solid var(--gris-200);
+        padding-top: 24px;
+    }
+    .meta-list-item {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: #4b5563;
+    }
+    .meta-list-item svg {
+        color: var(--azul);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    /* Right Block: Stats and Dashboard */
+    .dashboard-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+    
+    /* Stats grid */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    @media (max-width: 600px) {
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+    }
+    .stat-box {
+        background: white;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        border: 1px solid var(--gris-100);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        transition: transform 0.2s;
+    }
+    .stat-box:hover {
+        transform: translateY(-2px);
+    }
+    .stat-icon-wrapper {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .stat-icon-wrapper.favs {
+        background: rgba(210, 16, 52, 0.1);
+        color: var(--rojo);
+    }
+    .stat-icon-wrapper.contacts {
+        background: rgba(0, 158, 73, 0.1);
+        color: var(--verde);
+    }
+    .stat-icon-wrapper.complaints {
+        background: rgba(58, 117, 196, 0.1);
+        color: var(--azul);
+    }
+    .stat-number {
+        font-size: 24px;
+        font-weight: 800;
+        color: #1f2937;
+        line-height: 1.1;
+    }
+    .stat-label {
+        font-size: 13px;
+        color: var(--gris-600);
+    }
+
+    /* Quick Actions panel */
+    .actions-card {
+        background: white;
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        border: 1px solid var(--gris-100);
+    }
+    .actions-card h2 {
+        font-size: 20px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 24px;
+        position: relative;
+        padding-bottom: 8px;
+    }
+    .actions-card h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background: var(--azul);
+        border-radius: 2px;
+    }
+    .action-links-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    @media (max-width: 600px) {
+        .action-links-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .action-button-link {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        background: #f9fafb;
+        border-radius: 16px;
+        text-decoration: none;
+        color: #374151;
+        font-weight: 600;
+        border: 1px solid var(--gris-200);
+        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .action-button-link:hover {
+        background: white;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        border-color: var(--azul);
+    }
+    .action-button-link svg {
+        color: var(--azul);
+        flex-shrink: 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="profile-grid">
+        
+        <!-- Left Side: User Card Info -->
+        <aside class="user-card">
+            <div class="user-avatar-large">
+                {% if current_user.avatar %}
+                <img src="{{ url_for('static', filename='uploads/avatars/' ~ current_user.avatar) }}" alt="Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                {% else %}
+                {{ current_user.nombre[0].upper() }}
+                {% endif %}
+            </div>
+            <h1 class="user-name-title">{{ current_user.nombre }}</h1>
+            <span class="user-badge-role">{{ _(current_user.rol) }}</span>
+            
+            <div class="user-meta-list">
+                <div class="meta-list-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    <div>
+                        <div style="font-size: 11px; text-transform: uppercase; color: var(--gris-500);">{{ _('Correo Electrónico') }}</div>
+                        <div style="font-weight: 600; word-break: break-all;">{{ current_user.email }}</div>
+                    </div>
+                </div>
+
+                {% if current_user.telefono %}
+                <div class="meta-list-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2v3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <div>
+                        <div style="font-size: 11px; text-transform: uppercase; color: var(--gris-500);">{{ _('Teléfono') }}</div>
+                        <div style="font-weight: 600;">{{ current_user.telefono }}</div>
+                    </div>
+                </div>
+                </div>
+                {% endif %}
+                
+                {% if current_user.sobre_mi %}
+                <div class="meta-list-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <div>
+                        <div style="font-size: 11px; text-transform: uppercase; color: var(--gris-500);">{{ _('Sobre mí') }}</div>
+                        <div style="font-weight: 500; font-size: 13px; margin-top: 4px;">{{ current_user.sobre_mi }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="meta-list-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <div>
+                        <div style="font-size: 11px; text-transform: uppercase; color: var(--gris-500);">{{ _('Miembro desde') }}</div>
+                        <div style="font-weight: 600;">{{ current_user.fecha_registro.strftime('%d/%m/%Y') }}</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Side: Dashboard stats & quick navigation -->
+        <main class="dashboard-panel">
+            
+            <!-- Statistics row -->
+            <section class="stats-row">
+                <!-- Favorites -->
+                <div class="stat-box">
+                    <div class="stat-icon-wrapper favs">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-number">{{ total_favoritos }}</div>
+                        <div class="stat-label">{{ _('Favoritos') }}</div>
+                    </div>
+                </div>
+
+                <!-- Inquiries/Contacts -->
+                <div class="stat-box">
+                    <div class="stat-icon-wrapper contacts">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-number">{{ total_contactos }}</div>
+                        <div class="stat-label">{{ _('Mensajes') }}</div>
+                    </div>
+                </div>
+
+                <!-- Complaints -->
+                <div class="stat-box">
+                    <div class="stat-icon-wrapper complaints">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="stat-number">{{ total_quejas }}</div>
+                        <div class="stat-label">{{ _('Quejas') }}</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="actions-card">
+                <h2>{{ _('Gestión de mi cuenta') }}</h2>
+                <div class="action-links-grid">
+                    <a href="{{ url_for('user.mis_reservas') }}" class="action-button-link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span>{{ _('Mis Reservas') }}</span>
+                    </a>
+                    
+                    <a href="{{ url_for('user.favoritos') }}" class="action-button-link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                        </svg>
+                        <span>{{ _('Ver mis Favoritos') }}</span>
+                    </a>
+                    
+                    <a href="{{ url_for('user.quejas') }}" class="action-button-link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        </svg>
+                        <span>{{ _('Gestionar mis Quejas') }}</span>
+                    </a>
+
+                    <a href="{{ url_for('main.alquiler') }}" class="action-button-link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <span>{{ _('Explorar Alquileres') }}</span>
+                    </a>
+
+                    <a href="{{ url_for('main.venta') }}" class="action-button-link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>{{ _('Explorar Compras') }}</span>
+                    </a>
+                </div>
+            </section>
+            <!-- Edit Profile Form -->
+            <section class="actions-card" style="margin-top: 32px;">
+                <h2>{{ _('Editar mi perfil') }}</h2>
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('user.perfil') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label fw-bold") }}
+                        {{ form.nombre(class="form-control" + (" is-invalid" if form.nombre.errors else "")) }}
+                        {% for error in form.nombre.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.telefono.label(class="form-label fw-bold") }}
+                        {{ form.telefono(class="form-control" + (" is-invalid" if form.telefono.errors else "")) }}
+                        {% for error in form.telefono.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.sobre_mi.label(class="form-label fw-bold") }}
+                        {{ form.sobre_mi(class="form-control" + (" is-invalid" if form.sobre_mi.errors else ""), rows=3) }}
+                        {% for error in form.sobre_mi.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-4">
+                        {{ form.avatar.label(class="form-label fw-bold") }}
+                        {{ form.avatar(class="form-control" + (" is-invalid" if form.avatar.errors else "")) }}
+                        {% for error in form.avatar.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn text-white w-100 py-3" style="background: var(--azul); border-radius: 12px; font-weight: 600;">
+                        {{ _('Guardar Cambios') }}
+                    </button>
+                </form>
+            </section>
+        </main>
+        
+    </div>
+</div>
+{% endblock %}

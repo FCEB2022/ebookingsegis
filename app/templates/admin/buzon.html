@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_pagination %}
+
+{% block title %}Buzón de Contactos - {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h1>{{ _('Buzón de Contactos') }}</h1>
+        <a href="{{ url_for('admin.exportar_contactos') }}" class="btn btn-secondary">📥 {{ _('Exportar CSV') }}</a>
+    </div>
+
+    <!-- Filtros -->
+    <div class="panel" style="margin-bottom: 24px;">
+        <form method="GET">
+            <div style="display: flex; gap: 12px; align-items: end;">
+                <div class="field">
+                    <label>{{ _('Estado') }}</label>
+                    <select name="estado" class="form-control">
+                        <option value="">{{ _('Todos') }}</option>
+                        <option value="pendiente" {% if request.args.get('estado')=='pendiente' %}selected{% endif %}>{{
+                            _('Pendiente') }}</option>
+                        <option value="resuelto" {% if request.args.get('estado')=='resuelto' %}selected{% endif %}>{{
+                            _('Resuelto') }}</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>{{ _('Desde') }}</label>
+                    <input type="date" name="fecha_desde" value="{{ request.args.get('fecha_desde', '') }}"
+                        class="form-control">
+                </div>
+                <button type="submit" class="btn btn-secondary">{{ _('Filtrar') }}</button>
+                <a href="{{ url_for('admin.buzon') }}" class="btn btn-ghost">{{ _('Limpiar') }}</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabla de contactos -->
+    {% if contactos %}
+    <div class="panel">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ _('Fecha') }}</th>
+                    <th>{{ _('Nombre') }}</th>
+                    <th>{{ _('Email') }}</th>
+                    <th>{{ _('Teléfono') }}</th>
+                    <th>{{ _('Propiedad') }}</th>
+                    <th>{{ _('Estado') }}</th>
+                    <th>{{ _('Acciones') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contacto in contactos %}
+                <tr>
+                    <td>{{ contacto.fecha_contacto.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ contacto.nombre }}</td>
+                    <td><a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a></td>
+                    <td>{{ contacto.telefono }}</td>
+                    <td>
+                        <a href="{{ url_for('main.oferta_detalle', id=contacto.oferta.id) }}" target="_blank">
+                            {{ contacto.oferta.titulo[:30] }}...
+                        </a>
+                    </td>
+                    <td>
+                        <span class="status {% if contacto.estado == 'resuelto' %}ok{% else %}pend{% endif %}">
+                            {{ contacto.estado }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if contacto.estado == 'pendiente' %}
+                        <form method="POST" action="{{ url_for('admin.contacto_resolver', id=contacto.id) }}"
+                            style="display: inline;">
+                            {{ csrf_token() }}
+                            <button type="submit" class="mini primary">{{ _('Resolver') }}</button>
+                        </form>
+                        {% endif %}
+                        <button class="mini" onclick="alert('Mensaje: {{ contacto.mensaje }}')">{{ _('Ver mensaje')
+                            }}</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{ render_pagination(pagination, 'admin.buzon') if pagination }}
+    {% else %}
+    <div class="panel" style="text-align: center; padding: 48px;">
+        <h3>{{ _('No hay contactos') }}</h3>
+        <p>{{ _('Los contactos recibidos aparecerán aquí.') }}</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

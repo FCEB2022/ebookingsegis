@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de Administración - {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="container">
+    <h1>{{ _('Panel de Administración') }}</h1>
+    <p>Bienvenido, {{ current_user.nombre }}</p>
+
+    <!-- Statistics -->
+    <div class="dash-grid">
+        <div class="tile">
+            <div class="label">{{ _('Total Ofertas') }}</div>
+            <div class="big">{{ total_ofertas }}</div>
+        </div>
+        <div class="tile">
+            <div class="label">{{ _('Contactos') }}</div>
+            <div class="big">{{ total_contactos }}</div>
+        </div>
+        <div class="tile">
+            <div class="label">{{ _('Quejas') }}</div>
+            <div class="big">{{ total_quejas }}</div>
+        </div>
+        <div class="tile">
+            <div class="label">{{ _('Usuarios') }}</div>
+            <div class="big">{{ total_usuarios }}</div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="panel" style="margin-top: 32px;">
+        <h3>{{ _('Acciones Rápidas') }}</h3>
+        <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+            <a href="{{ url_for('admin.oferta_nueva') }}" class="btn btn-primary">{{ _('Nueva Oferta') }}</a>
+            <a href="{{ url_for('admin.ofertas') }}" class="btn btn-secondary">{{ _('Gestionar Ofertas') }}</a>
+            <a href="{{ url_for('admin.buzon') }}" class="btn btn-ghost">{{ _('Ver Buzón') }}</a>
+            <a href="{{ url_for('admin.usuarios') }}" class="btn btn-ghost">{{ _('Ver Usuarios') }}</a>
+            <a href="{{ url_for('admin.reservas') }}" class="btn btn-ghost">{{ _('Ver Reservas') }}</a>
+        </div>
+    </div>
+
+    <!-- Recent Contacts -->
+    {% if contactos_recientes %}
+    <div class="panel" style="margin-top: 32px;">
+        <h3>{{ _('Últimos Contactos') }}</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ _('Fecha') }}</th>
+                    <th>{{ _('Nombre') }}</th>
+                    <th>{{ _('Email') }}</th>
+                    <th>{{ _('Oferta') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contacto in contactos_recientes %}
+                <tr>
+                    <td>{{ contacto.fecha_contacto.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ contacto.nombre }}</td>
+                    <td>{{ contacto.email }}</td>
+                    <td>
+                        {% if contacto.oferta %}
+                        <a href="{{ url_for('main.oferta_detalle', id=contacto.oferta.id) }}">#{{ contacto.oferta.id
+                            }}</a>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <!-- Recent Properties -->
+    {% if ofertas_recientes %}
+    <div class="panel" style="margin-top: 32px;">
+        <h3>{{ _('Ofertas Recientes') }}</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ _('Título') }}</th>
+                    <th>{{ _('Ubicación') }}</th>
+                    <th>{{ _('Precio') }}</th>
+                    <th>{{ _('Estado') }}</th>
+                    <th>{{ _('Acciones') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for oferta in ofertas_recientes %}
+                <tr>
+                    <td>{{ oferta.titulo }}</td>
+                    <td>{{ oferta.ubicacion }}</td>
+                    <td>{{ oferta.precio | currency }}</td>
+                    <td>
+                        <span class="status {% if oferta.estado == 'activo' %}ok{% else %}pend{% endif %}">
+                            {{ oferta.estado }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('admin.oferta_editar', id=oferta.id) }}" class="mini primary">{{ _('Editar')
+                            }}</a>
+                        <a href="{{ url_for('main.oferta_detalle', id=oferta.id) }}" class="mini" target="_blank">{{
+                            _('Ver') }}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

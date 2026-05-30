@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% from "_macros.html" import render_pagination %}
+
+{% block title %}Gestión de Usuarios - {{ app_name }}{% endblock %}
+
+{% block content %}
+<section class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <h1>{{ _('Gestión de Usuarios') }}</h1>
+    </div>
+
+    <!-- Filters -->
+    <div class="panel" style="margin-bottom: 24px;">
+        <form method="GET">
+            <div style="display: flex; gap: 12px; align-items: end;">
+                <div class="field">
+                    <label>{{ _('Rol') }}</label>
+                    <select name="rol" class="form-control">
+                        <option value="">{{ _('Todos') }}</option>
+                        <option value="admin" {% if request.args.get('rol')=='admin' %}selected{% endif %}>{{
+                            _('Administrador') }}</option>
+                        <option value="agencia" {% if request.args.get('rol')=='agencia' %}selected{% endif %}>{{
+                            _('Agencia') }}</option>
+                        <option value="particular" {% if request.args.get('rol')=='particular' %}selected{% endif %}>{{
+                            _('Particular') }}</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-secondary">{{ _('Filtrar') }}</button>
+                <a href="{{ url_for('admin.usuarios') }}" class="btn btn-ghost">{{ _('Limpiar') }}</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Users Table -->
+    {% if usuarios %}
+    <div class="panel">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ _('ID') }}</th>
+                    <th>{{ _('Nombre') }}</th>
+                    <th>{{ _('Email') }}</th>
+                    <th>{{ _('Teléfono') }}</th>
+                    <th>{{ _('Rol') }}</th>
+                    <th>{{ _('Fecha de Registro') }}</th>
+                    <th>{{ _('Estado') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.id }}</td>
+                    <td>{{ usuario.nombre }}</td>
+                    <td><a href="mailto:{{ usuario.email }}">{{ usuario.email }}</a></td>
+                    <td>{{ usuario.telefono if usuario.telefono else '-' }}</td>
+                    <td>
+                        <span
+                            class="status {% if usuario.rol == 'admin' %}ok{% elif usuario.rol == 'agencia' %}pend{% else %}{% endif %}">
+                            {{ usuario.rol }}
+                        </span>
+                    </td>
+                    <td>{{ usuario.fecha_registro.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>
+                        <span class="status ok">{{ _('Activo') }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{ render_pagination(pagination, 'admin.usuarios') if pagination }}
+    {% else %}
+    <div class="panel" style="text-align: center; padding: 48px;">
+        <h3>{{ _('No hay usuarios') }}</h3>
+        <p>{{ _('Los usuarios registrados aparecerán aquí.') }}</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

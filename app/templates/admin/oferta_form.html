@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block title %}{{ accion }} {{ _('Oferta') }} - {{ app_name }}{% endblock %}
+
+{% block extra_css %}
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<style>
+    #map {
+        height: 300px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        z-index: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 900px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div>
+            <h1 style="margin: 0;">{{ accion }} oferta</h1>
+            {% if oferta %}
+            <p style="color: var(--gris-500); margin-top: 4px;">ID: {{ oferta.id }} - {{ oferta.titulo }}</p>
+            {% endif %}
+        </div>
+        <button type="button" class="btn-close" onclick="window.history.back()"
+            style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="oferta-form">
+        {{ form.hidden_tag() }}
+
+        <!-- 1. Información de la ubicación -->
+        <div class="panel" style="margin-bottom: 24px; border-radius: 12px; border: 1px solid #efefef;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <h3 style="margin: 0; font-size: 1.1em; flex-shrink: 0;">1. Información de la ubicación de la oferta</h3>
+                <span style="background: #e3f2fd; color: #1565c0; font-size: 0.72em; font-weight: 600; padding: 2px 10px; border-radius: 20px; flex-shrink: 0; white-space: nowrap;">Ubicación</span>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                <div class="form-group">
+                    {{ form.ubicacion.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.ubicacion(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.barrio.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.barrio(class="form-control", placeholder="Zona o barrio...") }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label style="color: var(--gris-600); font-size: 0.9em;">Mapa Interactivo (Arrastra el marcador para
+                    situar la oferta)</label>
+                <div id="map"></div>
+                <!-- Hidden fields for coordinates -->
+                {{ form.latitud(type="hidden", id="lat-field") }}
+                {{ form.longitud(type="hidden", id="lng-field") }}
+                <small style="color: var(--gris-500); margin-top: 4px; display: block;">Coordenadas: <span
+                        id="coordinates-preview">{{ oferta.latitud if oferta and oferta.latitud else '0' }}, {{
+                        oferta.longitud if oferta and oferta.longitud else '0' }}</span></small>
+            </div>
+        </div>
+
+        <!-- 2. Información técnica detallada -->
+        <div class="panel" style="margin-bottom: 24px; border-radius: 12px; border: 1px solid #efefef;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <h3 style="margin: 0; font-size: 1.1em; flex-shrink: 0;">2. Información técnica detallada de la oferta</h3>
+                <span style="background: #e8f5e9; color: #2e7d32; font-size: 0.72em; font-weight: 600; padding: 2px 10px; border-radius: 20px; flex-shrink: 0; white-space: nowrap;">Técnica</span>
+            </div>
+
+            <div class="form-group">
+                {{ form.titulo.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                {{ form.titulo(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.descripcion.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                {{ form.descripcion(class="form-control", rows="4") }}
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+                <div class="form-group">
+                    {{ form.tipo_operacion.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.tipo_operacion(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.tipo_propiedad.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.tipo_propiedad(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.estado_propiedad.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.estado_propiedad(class="form-control") }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+                <div class="form-group">
+                    {{ form.precio.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.precio(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.m2.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.m2(class="form-control") }}
+                </div>
+                <div class="form-group">
+                    {{ form.estado.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.estado(class="form-control") }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                <div class="form-group">
+                    <label style="color: var(--gris-600); font-size: 0.9em;">Fecha de Alta</label>
+                    <input type="text" class="form-control"
+                        value="{{ oferta.fecha_creacion.strftime('%d/%m/%Y') if oferta else now.strftime('%d/%m/%Y') }}"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    {{ form.fecha_baja_programada.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.fecha_baja_programada(class="form-control", type="date") }}
+                </div>
+                <div class="form-group">
+                    <label style="color: var(--gris-600); font-size: 0.9em;">Usuario de alta</label>
+                    <input type="text" class="form-control"
+                        value="{{ oferta.propietario.nombre if oferta else current_user.nombre }}" disabled>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Información adicional (Dinámica) -->
+        <div class="panel" style="margin-bottom: 24px; border-radius: 12px; border: 1px solid #efefef;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <h3 style="margin: 0; font-size: 1.1em; flex-shrink: 0;">3. Información adicional</h3>
+                <span style="background: #fff3e0; color: #ef6c00; font-size: 0.72em; font-weight: 600; padding: 2px 10px; border-radius: 20px; flex-shrink: 0; white-space: nowrap;">Dependiente del tipo</span>
+            </div>
+
+            <!-- Campo Alquiler (Solo si tipo_operacion es alquiler) -->
+            <div id="section-tipo-alquiler" class="form-group"
+                style="display: none; border-bottom: 1px solid #f0f0f0; padding-bottom: 16px; margin-bottom: 16px;">
+                {{ form.tipo_alquiler.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                {{ form.tipo_alquiler(class="form-control", style="max-width: 300px;") }}
+            </div>
+
+            <!-- Sección Vivienda -->
+            <div id="additional-vivienda" style="display: none;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group">
+                        {{ form.subtipo_propiedad.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                        {{ form.subtipo_propiedad(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.habitaciones.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                        {{ form.habitaciones(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.banos.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                        {{ form.banos(class="form-control") }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label
+                        style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 12px; display: block;">Características
+                        de la vivienda</label>
+                    <div class="checkbox-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                        {% for subfield in form.caracteristicas_vivienda %}
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; font-weight: normal; cursor: pointer;">
+                            {{ subfield }}
+                            {{ subfield.label.text }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Oficina -->
+            <div id="additional-oficina" style="display: none;">
+                <div class="form-group">
+                    {{ form.subtipo_propiedad.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.subtipo_propiedad(class="form-control", style="max-width: 300px;") }}
+                </div>
+                <div class="form-group">
+                    <label
+                        style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 12px; display: block;">Características
+                        de la oficina</label>
+                    <div class="checkbox-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                        {% for subfield in form.caracteristicas_oficina %}
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; font-weight: normal; cursor: pointer;">
+                            {{ subfield }}
+                            {{ subfield.label.text }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Locales y Naves -->
+            <div id="additional-locales_naves" style="display: none;">
+                <div class="form-group">
+                    {{ form.subtipo_propiedad.label(style="color: var(--gris-600); font-size: 0.9em;") }}
+                    {{ form.subtipo_propiedad(class="form-control", style="max-width: 300px;") }}
+                </div>
+                <div class="form-group">
+                    <label
+                        style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 12px; display: block;">Características
+                        de locales y naves</label>
+                    <div class="checkbox-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                        {% for subfield in form.caracteristicas_local %}
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; font-weight: normal; cursor: pointer;">
+                            {{ subfield }}
+                            {{ subfield.label.text }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Terrenos -->
+            <div id="additional-terrenos" style="display: none;">
+                <div class="form-group">
+                    <label
+                        style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 12px; display: block;">Características
+                        del terreno</label>
+                    <div class="checkbox-grid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                        {% for subfield in form.caracteristicas_terreno %}
+                        <label
+                            style="display: flex; align-items: center; gap: 8px; font-weight: normal; cursor: pointer;">
+                            {{ subfield }}
+                            {{ subfield.label.text }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Información multimedia -->
+        <div class="panel" style="margin-bottom: 24px; border-radius: 12px; border: 1px solid #efefef;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                <h3 style="margin: 0; font-size: 1.1em; flex-shrink: 0;">4. Información multimedia</h3>
+                <span style="background: #f3e5f5; color: #7b1fa2; font-size: 0.72em; font-weight: 600; padding: 2px 10px; border-radius: 20px; flex-shrink: 0; white-space: nowrap;">Multimedia</span>
+            </div>
+
+            <div style="background: #f8f9fa; border: 1px solid #eee; border-radius: 8px; padding: 20px;">
+                <label
+                    style="color: var(--gris-600); font-size: 0.9em; margin-bottom: 12px; display: block;">Repositorio
+                    multimedia</label>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                    {% if oferta %}
+                    {% for img in oferta.get_imagenes() %}
+                    <div style="position: relative;">
+                        <img src="{{ url_for('static', filename='uploads/' + img) }}"
+                            style="width: 100%; height: 100px; object-fit: cover; border-radius: 6px;">
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <div
+                        style="width: 100%; height: 100px; border: 2px dashed #ddd; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gris-400);">
+                        <span>📸 Añadir</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        {{ form.imagenes.label(style="font-size: 0.85em;") }}
+                        {{ form.imagenes(class="form-control") }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.videos.label(style="font-size: 0.85em;") }}
+                        {{ form.videos(class="form-control") }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Acciones -->
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-top: 1px solid #eee; margin-top: 12px;">
+            <div style="color: var(--gris-500); font-size: 0.85em;">
+                {% if oferta %}
+                Última modificación: {{ oferta.fecha_modificacion.strftime('%Y-%m-%d') }} - Usuario:
+                {% set last_mod = oferta.historial.order_by(HistorialOferta.fecha_modificacion.desc()).first() %}
+                {{ last_mod.usuario_modificador.nombre if last_mod and last_mod.usuario_modificador else
+                oferta.propietario.nombre }}
+                {% endif %}
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <a href="{{ url_for('admin.ofertas') }}" class="btn btn-ghost" style="padding: 10px 30px;">Cancelar</a>
+                <button type="submit" class="btn btn-primary"
+                    style="padding: 10px 40px; border-radius: 24px; background-color: var(--primario);">Guardar
+                    cambios</button>
+            </div>
+        </div>
+    </form>
+</section>
+
+{% block extra_js %}
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/admin_offer_form.js') }}"></script>
+{% endblock %}
+{% endblock %}

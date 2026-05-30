@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}{{ app_name }} - {{ _('Encuentra tu próximo hogar en Guinea Ecuatorial') }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Inspired by PortalInmobiliario -->
+<section class="home-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content-wrapper">
+        <div class="hero-text">
+            <h1 class="hero-title">{{ _('Encuentra tu próximo hogar en Guinea Ecuatorial') }}</h1>
+            <p class="hero-subtitle">{{ _('Explora miles de propiedades verificadas. Compra, vende o alquila con total
+                confianza.') }}</p>
+        </div>
+
+        <!-- Prominent Search Box -->
+        <div class="home-search-box">
+            <!-- Tab Selection -->
+            <div class="search-tabs">
+                <button class="search-tab active" data-type="venta">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    </svg>
+                    {{ _('Venta') }}
+                </button>
+                <button class="search-tab" data-type="alquiler">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    {{ _('Alquiler') }}
+                </button>
+            </div>
+
+            <!-- Search Form -->
+            <form action="{{ url_for('main.venta') }}" method="get" class="search-form" id="homeSearchForm">
+                <div class="search-fields">
+                    <div class="search-field large">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" name="ubicacion" placeholder="{{ _('Ciudad, zona...') }}"
+                            class="search-input" />
+                    </div>
+                    <div class="search-field">
+                        <select name="tipo_propiedad" class="search-select">
+                            <option value="">{{ _('Tipo') }}</option>
+                            <option value="Apartamento">{{ _('Apartamento') }}</option>
+                            <option value="Casa">{{ _('Casa') }}</option>
+                            <option value="Local">{{ _('Local') }}</option>
+                            <option value="Terreno">{{ _('Terreno') }}</option>
+                        </select>
+                    </div>
+                    <div class="search-field">
+                        <input type="number" name="precio_max" placeholder="{{ _('Precio máx.') }}"
+                            class="search-input" />
+                    </div>
+                    <button type="submit" class="search-submit-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        {{ _('Buscar') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="hero-stats">
+            <div class="stat-badge">
+                <strong>{{ total_alquiler }}</strong>
+                <span>{{ _('propiedades en alquiler') }}</span>
+            </div>
+            <div class="stat-badge">
+                <strong>{{ total_venta }}</strong>
+                <span>{{ _('propiedades en venta') }}</span>
+            </div>
+            <div class="stat-badge">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <span>{{ _('Propiedades verificadas') }}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Properties -->
+{% if destacadas %}
+<section class="properties-section">
+    <div class="section-header">
+        <h2>{{ _('Propiedades Destacadas') }}</h2>
+        <a href="{{ url_for('main.venta') }}" class="see-all-link">
+            {{ _('Ver todas las propiedades') }}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+
+    <div class="properties-grid">
+        {% for oferta in destacadas %}
+        <div class="property-card">
+            <div class="property-image">
+                {% if oferta.get_imagenes() %}
+                <img src="{{ url_for('static', filename='uploads/' + oferta.get_imagenes()[0]) }}"
+                    alt="{{ oferta.titulo }}">
+                {% else %}
+                <div class="property-image-placeholder"></div>
+                {% endif %}
+
+                {% if oferta.destacado %}
+                <span class="property-badge featured">{{ _('Destacado') }}</span>
+                {% endif %}
+
+                <button class="favorite-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="property-content">
+                <div class="property-price">{{ oferta.precio | currency }}</div>
+                <h3 class="property-title">{{ oferta.titulo }}</h3>
+                <p class="property-location">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    {{ oferta.ubicacion }}
+                </p>
+
+                {% set caract = oferta.get_caracteristicas() %}
+                <div class="property-features">
+                    {% if caract.get('habitaciones') %}
+                    <span class="feature">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        {{ caract.habitaciones }} {{ _('hab') }}
+                    </span>
+                    {% endif %}
+                    {% if caract.get('m2') %}
+                    <span class="feature">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        </svg>
+                        {{ caract.m2 }} m²
+                    </span>
+                    {% endif %}
+                    {% if caract.get('parking') %}
+                    <span class="feature">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        </svg>
+                        {{ _('Parking') }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <a href="{{ url_for('main.oferta_detalle', id=oferta.id) }}" class="property-link">
+                    {{ _('Ver detalles') }}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Why Choose Us -->
+<section class="why-section">
+    <div class="why-content">
+        <h2>{{ _('Por qué elegir EquaHome?') }}</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon"
+                    style="background: linear-gradient(135deg, var(--verde), var(--verde-light));">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h3>{{ _('Propiedades verificadas') }}</h3>
+                <p>{{ _('Todas las propiedades son revisadas y verificadas antes de publicarse') }}</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon" style="background: linear-gradient(135deg, var(--azul), var(--azul-light));">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <h3>{{ _('Atención personalizada') }}</h3>
+                <p>{{ _('Equipo dedicado para ayudarte en cada paso del proceso') }}</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon" style="background: linear-gradient(135deg, var(--verde), var(--azul));">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h3>{{ _('Proceso seguro y transparente') }}</h3>
+                <p>{{ _('Transacciones seguras con total transparencia en cada etapa') }}</p>
+            </div>
+
+            <div class="benefit-card">
+                <div class="benefit-icon"
+                    style="background: linear-gradient(135deg, var(--azul-dark), var(--verde-dark));">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                </div>
+                <h3>{{ _('Agencias certificadas') }}</h3>
+                <p>{{ _('Trabajamos solo con agencias y propietarios verificados') }}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section for Agencies -->
+<section class="cta-section">
+    <div class="cta-content">
+        <div class="cta-text">
+            <h2>{{ _('¿Eres propietario o agencia?') }}</h2>
+            <p>{{ _('Publica tus propiedades y llega a miles de potenciales clientes.') }}</p>
+        </div>
+        <div class="cta-actions">
+            {% if current_user.is_authenticated and current_user.is_admin() %}
+            <a href="{{ url_for('admin.oferta_nueva') }}" class="btn btn-success btn-large">{{ _('Publicar oferta')
+                }}</a>
+            {% else %}
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-large">{{ _('Crear cuenta') }}</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-ghost btn-large">{{ _('Acceder') }}</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script>
+    // Search tab switching
+    document.querySelectorAll('.search-tab').forEach(tab => {
+        tab.addEventListener('click', function () {
+            // Remove active class from all tabs
+            document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+            // Add active to clicked tab
+            this.classList.add('active');
+
+            // Update form action based on type
+            const type = this.dataset.type;
+            const form = document.getElementById('homeSearchForm');
+            form.action = type === 'venta' ? '{{ url_for("main.venta") }}' : '{{ url_for("main.alquiler") }}';
+        });
+    });
+</script>
+{% endblock %}

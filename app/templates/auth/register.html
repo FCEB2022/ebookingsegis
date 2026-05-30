@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+
+{% block title %}Crear cuenta - {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 480px; margin-top: 60px;">
+    <div class="panel">
+        <h1 style="margin-top: 0;">{{ _('Crear Cuenta') }}</h1>
+
+        <form method="POST" action="{{ url_for('auth.register') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                {{ form.nombre.label }}
+                {{ form.nombre(class="form-control") }}
+                {% if form.nombre.errors %}
+                {% for error in form.nombre.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.username.label }}
+                {{ form.username(class="form-control", placeholder=_('Ej: juan_garcia')) }}
+                {% if form.username.errors %}
+                {% for error in form.username.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.email.label }}
+                {{ form.email(class="form-control") }}
+                {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.telefono.label }}
+                {{ form.telefono(class="form-control") }}
+                {% if form.telefono.errors %}
+                {% for error in form.telefono.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(class="form-control", type="password") }}
+                {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.password2.label }}
+                {{ form.password2(class="form-control", type="password") }}
+                {% if form.password2.errors %}
+                {% for error in form.password2.errors %}
+                <div class="error">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+
+            <div style="margin-top: 24px;">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">{{ _('Registrarse') }}</button>
+            </div>
+        </form>
+
+        <div style="text-align: center; margin-top: 16px;">
+            <a href="{{ url_for('auth.login') }}" style="color: var(--azul); text-decoration: none;">{{ _('¿Ya tienes
+                cuenta? Inicia sesión') }}</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
