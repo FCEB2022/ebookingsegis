@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portal Inmobiliario — Prototipo Alta Fidelidad</title>
+    <style>
+        :root {
+            --verde: #009E49;
+            /* Bandera Guinea Ecuatorial */
+            --blanco: #FFFFFF;
+            --azul: #3A75C4;
+            --rojo: #D21034;
+            --gris-100: #f6f7fb;
+            --gris-200: #eef0f5;
+            --gris-300: #d9dce3;
+            --gris-600: #556070;
+            --gris-800: #2b3240;
+            --sombra: 0 10px 30px rgba(0, 0, 0, .08);
+            --radio: 18px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background: var(--gris-100);
+            color: #111827;
+            line-height: 1.45;
+        }
+
+        /* Header */
+        .topbar {
+            background: linear-gradient(90deg, var(--azul), var(--verde));
+            color: var(--blanco);
+            padding: 10px 24px;
+            font-size: 14px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            background: var(--blanco);
+            box-shadow: var(--sombra);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+
+        .brand .logo {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        .logo div:nth-child(1) {
+            background: var(--verde)
+        }
+
+        .logo div:nth-child(2) {
+            background: var(--blanco)
+        }
+
+        .logo div:nth-child(3) {
+            background: var(--azul)
+        }
+
+        .logo div:nth-child(4) {
+            background: var(--rojo)
+        }
+
+        .nav {
+            display: flex;
+            gap: 14px;
+            align-items: center
+        }
+
+        .nav a {
+            color: var(--gris-800);
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 10px
+        }
+
+        .nav a:hover {
+            background: var(--gris-200)
+        }
+
+        .cta {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            appearance: none;
+            border: 0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--sombra);
+        }
+
+        .btn-primary {
+            background: var(--verde);
+            color: var(--blanco)
+        }
+
+        .btn-primary:hover {
+            filter: brightness(0.95)
+        }
+
+        .btn-secondary {
+            background: var(--azul);
+            color: var(--blanco)
+        }
+
+        .btn-ghost {
+            background: var(--blanco);
+            color: var(--gris-800);
+            border: 1px solid var(--gris-300)
+        }
+
+        /* Hero */
+        .hero {
+            padding: 36px 24px 24px;
+            background: linear-gradient(180deg, rgba(58, 117, 196, .10), transparent);
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 28px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin: 0 0 10px
+        }
+
+        .hero p {
+            margin: 0 0 18px;
+            color: var(--gris-600)
+        }
+
+        .searchbar {
+            background: var(--blanco);
+            border-radius: var(--radio);
+            padding: 14px;
+            box-shadow: var(--sombra);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chip {
+            background: var(--gris-200);
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            color: var(--gris-800)
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--gris-600)
+        }
+
+        .field input,
+        .field select {
+            padding: 12px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--gris-300);
+            outline: none;
+            font-size: 14px;
+            color: var(--gris-800);
+            background: var(--blanco);
+        }
+
+        .kpis {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap
+        }
+
+        .kpi {
+            background: var(--blanco);
+            padding: 12px 16px;
+            border-radius: 14px;
+            box-shadow: var(--sombra);
+            font-weight: 700
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 24px auto;
+            padding: 0 24px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 26px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--blanco);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card .img {
+            aspect-ratio: 16/10;
+            background: linear-gradient(120deg, var(--gris-200), var(--gris-300));
+            position: relative
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--rojo);
+            color: var(--blanco);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            box-shadow: var(--sombra)
+        }
+
+        .card .body {
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--verde)
+        }
+
+        .meta {
+            font-size: 13px;
+            color: var(--gris-600)
+        }
+
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px
+        }
+
+        .tag {
+            background: var(--gris-200);
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px
+        }
+
+        .card .actions {
+            display: flex;
+            gap: 8px;
+            padding: 12px 14px 16px
+        }
+
+        .mini {
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            border: 1px solid var(--gris-300);
+            background: var(--blanco);
+            cursor: pointer
+        }
+
+        .mini.primary {
+            background: var(--azul);
+            color: var(--blanco);
+            border-color: transparent
+        }
+
+        .mini.ghost {
+            background: var(--blanco)
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .panel {
+            background: var(--blanco);
+            border-radius: 16px;
+            box-shadow: var(--sombra);
+            padding: 16px
+        }
+
+        .panel h3 {
+            margin: 0 0 10px
+        }
+
+        .filter {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .filter label {
+            font-size: 13px;
+            color: var(--gris-600)
+        }
+
+        .map {
+            height: 300px;
+            border-radius: 16px;
+            background: linear-gradient(90deg, rgba(0, 158, 73, .2), rgba(58, 117, 196, .2))
+        }
+
+        /* Dashboard (Agencia/Anunciante) */
+        .dashboard {
+            margin-top: 40px
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px
+        }
+
+        .tile {
+            background: var(--blanco);
+            border-radius: 16px;
+            box-shadow: var(--sombra);
+            padding: 16px
+        }
+
+        .tile .big {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--azul)
+        }
+
+        .table {
+            margin-top: 14px;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px
+        }
+
+        .table th,
+        .table td {
+            padding: 10px;
+            border-bottom: 1px solid var(--gris-200);
+            text-align: left
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: var(--gris-200);
+            display: inline-block;
+            font-size: 12px
+        }
+
+        .status.ok {
+            background: rgba(0, 158, 73, .15);
+            color: var(--verde);
+            font-weight: 700
+        }
+
+        .status.pend {
+            background: rgba(210, 16, 52, .15);
+            color: var(--rojo);
+            font-weight: 700
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            background: var(--gris-800);
+            color: var(--blanco);
+            padding: 30px 24px
+        }
+
+        footer .cols {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto
+        }
+
+        footer a {
+            color: #cfe5ff;
+            text-decoration: none;
+            font-size: 14px
+        }
+
+        footer p {
+            color: #d7dce6
+        }
+
+        /* Responsive */
+        @media (max-width:1024px) {
+            .hero-inner {
+                grid-template-columns: 1fr
+            }
+
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            footer .cols {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:640px) {
+            .searchbar {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px
+            }
+
+            .cards {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">Bienvenido al prototipo — Compra, venta y alquiler de inmuebles para particulares y agencias.
+    </div>
+    <header class="header">
+        <div class="brand">
+            <div class="logo">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div>EquaHome</div>
+        </div>
+        <nav class="nav">
+            <a href="#home">Inicio</a>
+            <a href="#explorar">Explorar</a>
+            <a href="#agencias">Agencias</a>
+            <a href="#publicar">Publicar</a>
+            <a href="#dashboard">Panel</a>
+        </nav>
+        <div class="cta">
+            <button class="btn btn-ghost">Iniciar sesión</button>
+            <button class="btn btn-primary">Crear cuenta</button>
+        </div>
+    </header>
+
+    <!-- HERO + SEARCH -->
+    <section id="home" class="hero">
+        <div class="hero-inner">
+            <div>
+                <h1>Encuentra tu próximo hogar en Guinea Ecuatorial</h1>
+                <p>Explora miles de propiedades verificadas. Publica como particular o gestiona tu cartera como agencia.
+                </p>
+                <div class="searchbar">
+                    <div class="field">
+                        <label>Ubicación</label>
+                        <input id="qLocation" placeholder="Malabo, Bata, etc." />
+                    </div>
+                    <div class="field">
+                        <label>Tipo</label>
+                        <select id="qType">
+                            <option value="">Cualquiera</option>
+                            <option>Apartamento</option>
+                            <option>Casa</option>
+                            <option>Local</option>
+                            <option>Terreno</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Precio máx. (€)</label>
+                        <input id="qPrice" type="number" placeholder="100000" />
+                    </div>
+                    <div class="field">
+                        <label>Habitaciones</label>
+                        <select id="qBeds">
+                            <option value="">Cualquiera</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button id="btnSearch" class="btn btn-secondary">Buscar</button>
+                    </div>
+                </div>
+                <div class="kpis">
+                    <div class="kpi">+4.500 propiedades</div>
+                    <div class="kpi">Verificación anti-fraude</div>
+                    <div class="kpi">Agencias certificadas</div>
+                </div>
+            </div>
+            <div>
+                <div class="panel">
+                    <h3>Simulador de hipoteca</h3>
+                    <div class="filter">
+                        <label>Precio (€)</label>
+                        <input id="loanPrice" type="number" value="120000" />
+                        <label>Entrada (€)</label>
+                        <input id="loanDown" type="number" value="20000" />
+                        <label>Interés anual (%)</label>
+                        <input id="loanRate" type="number" value="3.2" step="0.01" />
+                        <label>Plazo (años)</label>
+                        <input id="loanYears" type="number" value="25" />
+                        <button id="calcLoan" class="btn btn-primary">Calcular</button>
+                        <div id="loanResult" class="chip">Cuota estimada: —</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESULTS + SIDEBAR -->
+    <section id="explorar" class="container grid">
+        <div>
+            <div class="cards" id="cards"></div>
+        </div>
+        <aside class="sidebar">
+            <div class="panel">
+                <h3>Filtros rápidos</h3>
+                <div class="filter">
+                    <label><input type="checkbox" id="fNew" /> Obra nueva</label>
+                    <label><input type="checkbox" id="fPets" /> Admite mascotas</label>
+                    <label><input type="checkbox" id="fParking" /> Con parking</label>
+                    <label><input type="checkbox" id="fFurnished" /> Amueblado</label>
+                </div>
+            </div>
+            <div class="panel">
+                <h3>Mapa (mock)</h3>
+                <div class="map"></div>
+            </div>
+            <div class="panel" id="publicar">
+                <h3>Publicar anuncio</h3>
+                <p>Publica como <b>particular</b> o gestiona tu cartera como <b>agencia</b>.</p>
+                <button class="btn btn-primary" onclick="alert('Flujo de publicación — prototipo')">Empezar</button>
+            </div>
+        </aside>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="container dashboard">
+        <h2>Panel de anunciante / agencia</h2>
+        <div class="dash-grid">
+            <div class="tile">
+                <div>Visitas hoy</div>
+                <div class="big" id="m1">0</div>
+            </div>
+            <div class="tile">
+                <div>Contactos</div>
+                <div class="big" id="m2">0</div>
+            </div>
+            <div class="tile">
+                <div>Favoritos</div>
+                <div class="big" id="m3">0</div>
+            </div>
+            <div class="tile">
+                <div>Anuncios activos</div>
+                <div class="big" id="m4">0</div>
+            </div>
+        </div>
+
+        <div class="tile" style="margin-top:16px">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+                <h3>Mis propiedades</h3>
+                <button class="btn btn-secondary" onclick="alert('Nuevo anuncio — prototipo')">Nuevo anuncio</button>
+            </div>
+            <table class="table" id="tbl">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Ubicación</th>
+                        <th>Precio</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer>
+        <div class="cols">
+            <div>
+                <h4>EquaHome</h4>
+                <p>Plataforma inmobiliaria para Guinea Ecuatorial — compra, venta y alquiler.</p>
+            </div>
+            <div>
+                <h4>Para particulares</h4>
+                <p><a href="#publicar">Publicar vivienda</a></p>
+                <p><a href="#explorar">Buscar inmuebles</a></p>
+            </div>
+            <div>
+                <h4>Para agencias</h4>
+                <p><a href="#dashboard">Panel multiagente</a></p>
+                <p><a href="#publicar">Planes y precios</a></p>
+            </div>
+            <div>
+                <h4>Legal</h4>
+                <p><a href="#">Términos</a></p>
+                <p><a href="#">Privacidad</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mock data
+        const listings = [
+            { title: "Apartamento céntrico con vistas", city: "Malabo", type: "Apartamento", price: 95000, beds: 2, m2: 78, badge: "Destacado", tags: ["Amueblado", "Céntrico"], features: { new: false, pets: true, parking: false, furnished: true } },
+            { title: "Casa unifamiliar con jardín", city: "Bata", type: "Casa", price: 210000, beds: 4, m2: 180, badge: "", tags: ["Jardín", "Parking"], features: { new: false, pets: true, parking: true, furnished: false } },
+            { title: "Local comercial en zona prime", city: "Malabo", type: "Local", price: 150000, beds: 0, m2: 95, badge: "Oportunidad", tags: ["Centro", "Escaparate"], features: { new: true, pets: false, parking: false, furnished: false } },
+            { title: "Terreno urbanizable", city: "Bata", type: "Terreno", price: 60000, beds: 0, m2: 350, badge: "", tags: ["Inversión"], features: { new: false, pets: false, parking: false, furnished: false } },
+            { title: "Dúplex moderno", city: "Malabo", type: "Apartamento", price: 175000, beds: 3, m2: 120, badge: "", tags: ["Reformado", "Luminoso"], features: { new: true, pets: true, parking: true, furnished: true } },
+            { title: "Ático con terraza", city: "Ebebiyín", type: "Apartamento", price: 130000, beds: 2, m2: 90, badge: "Nuevo", tags: ["Terraza", "Vistas"], features: { new: true, pets: false, parking: true, furnished: false } },
+        ];
+
+        const agencyRows = [
+            { title: "Casa unifamiliar con jardín", city: "Bata", price: 210000, state: "Publicado" },
+            { title: "Apartamento céntrico con vistas", city: "Malabo", price: 95000, state: "Pendiente revisión" },
+            { title: "Local comercial en zona prime", city: "Malabo", price: 150000, state: "Publicado" },
+        ];
+
+        function renderCards(items) {
+            const wrap = document.getElementById('cards');
+            wrap.innerHTML = '';
+            items.forEach((it) => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+          <div class="img">${it.badge ? `<span class="badge">${it.badge}</span>` : ''}</div>
+          <div class="body">
+            <div class="price">€ ${it.price.toLocaleString('es-ES')}</div>
+            <div><b>${it.title}</b></div>
+            <div class="meta">${it.city} · ${it.type} · ${it.beds || 0} hab. · ${it.m2} m²</div>
+            <div class="tags">${it.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+          </div>
+          <div class="actions">
+            <button class="mini primary" onclick="alert('Contactar — prototipo')">Contactar</button>
+            <button class="mini" onclick="alert('Favorito — prototipo')">❤</button>
+            <button class="mini ghost" onclick="alert('Detalles — prototipo')">Ver detalle</button>
+          </div>
+        `;
+                wrap.appendChild(card);
+            });
+        }
+
+        function applyFilters() {
+            const qLoc = document.getElementById('qLocation').value.trim().toLowerCase();
+            const qType = document.getElementById('qType').value;
+            const qPrice = parseFloat(document.getElementById('qPrice').value || '0');
+            const qBeds = document.getElementById('qBeds').value;
+            const f = {
+                new: document.getElementById('fNew').checked,
+                pets: document.getElementById('fPets').checked,
+                parking: document.getElementById('fParking').checked,
+                furnished: document.getElementById('fFurnished').checked,
+            };
+            const filtered = listings.filter(it => {
+                if (qLoc && !it.city.toLowerCase().includes(qLoc)) return false;
+                if (qType && it.type !== qType) return false;
+                if (qPrice && it.price > qPrice) return false;
+                if (qBeds && qBeds !== '4+' && it.beds !== Number(qBeds)) return false;
+                if (qBeds === '4+' && it.beds < 4) return false;
+                if (f.new && !it.features.new) return false;
+                if (f.pets && !it.features.pets) return false;
+                if (f.parking && !it.features.parking) return false;
+                if (f.furnished && !it.features.furnished) return false;
+                return true;
+            });
+            renderCards(filtered);
+        }
+
+        function renderDashboard() {
+            document.getElementById('m1').textContent = 342;
+            document.getElementById('m2').textContent = 28;
+            document.getElementById('m3').textContent = 112;
+            document.getElementById('m4').textContent = 3;
+            const tb = document.querySelector('#tbl tbody');
+            tb.innerHTML = '';
+            agencyRows.forEach(r => {
+                const tr = document.createElement('tr');
+                const stateClass = r.state === 'Publicado' ? 'ok' : 'pend';
+                tr.innerHTML = `<td>${r.title}</td><td>${r.city}</td><td>€ ${r.price.toLocaleString('es-ES')}</td><td><span class="status ${stateClass}">${r.state}</span></td>
+        <td><button class="mini">Editar</button> <button class="mini">Estadísticas</button></td>`;
+                tb.appendChild(tr);
+            });
+        }
+
+        function calcLoan() {
+            const P = parseFloat(document.getElementById('loanPrice').value || 0) - parseFloat(document.getElementById('loanDown').value || 0);
+            const r = (parseFloat(document.getElementById('loanRate').value || 0) / 100) / 12;
+            const n = (parseFloat(document.getElementById('loanYears').value || 0)) * 12;
+            const cuota = (r === 0) ? P / n : (P * r) / (1 - Math.pow(1 + r, -n));
+            document.getElementById('loanResult').textContent = 'Cuota estimada: € ' + (isFinite(cuota) ? Math.round(cuenta = cuota).toLocaleString('es-ES') : '—');
+        }
+
+        document.getElementById('btnSearch').addEventListener('click', applyFilters);
+        document.getElementById('calcLoan').addEventListener('click', calcLoan);
+
+        // Init
+        renderCards(listings);
+        renderDashboard();
+    </script>
+</body>
+
+</html>

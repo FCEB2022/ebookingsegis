@@ -1,0 +1,1543 @@
+# Translations template for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-05-30 15:24+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app/forms.py:19 app/forms.py:35
+msgid "Nombre de usuario"
+msgstr ""
+
+#: app/forms.py:20 app/forms.py:36
+msgid "El nombre de usuario es requerido"
+msgstr ""
+
+#: app/forms.py:21 app/forms.py:37
+msgid "El nombre de usuario debe tener entre 3 y 64 caracteres"
+msgstr ""
+
+#: app/forms.py:23 app/forms.py:47
+msgid "Contraseña"
+msgstr ""
+
+#: app/forms.py:24 app/forms.py:48
+msgid "La contraseña es requerida"
+msgstr ""
+
+#: app/forms.py:26
+msgid "Recordarme"
+msgstr ""
+
+#: app/forms.py:31 app/forms.py:328
+msgid "Nombre completo"
+msgstr ""
+
+#: app/forms.py:32 app/forms.py:159 app/forms.py:329
+msgid "El nombre es requerido"
+msgstr ""
+
+#: app/forms.py:33
+msgid "El nombre debe tener entre 3 y 100 caracteres"
+msgstr ""
+
+#: app/forms.py:39 app/forms.py:162 app/templates/admin/buzon.html:46
+#: app/templates/admin/dashboard.html:51 app/templates/admin/usuarios.html:42
+msgid "Email"
+msgstr ""
+
+#: app/forms.py:40 app/forms.py:163
+msgid "El email es requerido"
+msgstr ""
+
+#: app/forms.py:41 app/forms.py:164
+msgid "Email inválido"
+msgstr ""
+
+#: app/forms.py:43 app/forms.py:166 app/forms.py:332
+#: app/templates/admin/buzon.html:47 app/templates/admin/usuarios.html:43
+#: app/templates/user/perfil.html:244
+msgid "Teléfono"
+msgstr ""
+
+#: app/forms.py:44 app/forms.py:167
+msgid "El teléfono es requerido"
+msgstr ""
+
+#: app/forms.py:45
+msgid "Teléfono inválido"
+msgstr ""
+
+#: app/forms.py:49
+msgid "La contraseña debe tener al menos 6 caracteres"
+msgstr ""
+
+#: app/forms.py:51
+msgid "Confirmar contraseña"
+msgstr ""
+
+#: app/forms.py:52
+msgid "Confirme la contraseña"
+msgstr ""
+
+#: app/forms.py:53
+msgid "Las contraseñas deben coincidir"
+msgstr ""
+
+#: app/forms.py:60
+msgid "Este nombre de usuario ya está en uso. Por favor elige otro."
+msgstr ""
+
+#: app/forms.py:66
+msgid "Este email ya está registrado. Por favor usa otro."
+msgstr ""
+
+#: app/forms.py:71 app/forms.py:180 app/templates/admin/dashboard.html:83
+msgid "Título"
+msgstr ""
+
+#: app/forms.py:72 app/forms.py:181
+msgid "El título es requerido"
+msgstr ""
+
+#: app/forms.py:75 app/forms.py:191 app/templates/main/oferta_detalle.html:519
+msgid "Descripción"
+msgstr ""
+
+#: app/forms.py:76 app/forms.py:192
+msgid "La descripción es requerida"
+msgstr ""
+
+#: app/forms.py:78 app/templates/main/alquiler.html:135
+#: app/templates/main/compartir.html:129 app/templates/main/venta.html:129
+msgid "Precio (FCFA)"
+msgstr ""
+
+#: app/forms.py:79
+msgid "El precio es requerido"
+msgstr ""
+
+#: app/forms.py:80
+msgid "El precio debe ser mayor a 0"
+msgstr ""
+
+#: app/forms.py:82 app/forms.py:234 app/templates/main/alquiler.html:105
+#: app/templates/main/compartir.html:105 app/templates/main/venta.html:105
+msgid "Ciudad"
+msgstr ""
+
+#: app/forms.py:83
+msgid "La ciudad es requerida"
+msgstr ""
+
+#: app/forms.py:85 app/templates/main/alquiler.html:111
+#: app/templates/main/compartir.html:111 app/templates/main/venta.html:111
+msgid "Barrio / Zona"
+msgstr ""
+
+#: app/forms.py:86
+msgid "Latitud"
+msgstr ""
+
+#: app/forms.py:87
+msgid "Longitud"
+msgstr ""
+
+#: app/forms.py:89 app/forms.py:243 app/templates/admin/ofertas.html:43
+#: app/templates/main/alquiler.html:123 app/templates/main/compartir.html:117
+#: app/templates/main/venta.html:117
+msgid "Tipo de propiedad"
+msgstr ""
+
+#: app/forms.py:89
+msgid "Selecciona el tipo de propiedad"
+msgstr ""
+
+#: app/forms.py:91
+msgid "Subtipo de propiedad"
+msgstr ""
+
+#: app/forms.py:92
+msgid "Indiferente"
+msgstr ""
+
+#: app/forms.py:95 app/templates/admin/ofertas.html:29
+msgid "Tipo de transacción"
+msgstr ""
+
+#: app/forms.py:96 app/forms.py:185
+msgid "Seleccionar..."
+msgstr ""
+
+#: app/forms.py:97 app/templates/base.html:59
+#: app/templates/main/oferta_detalle.html:407
+msgid "Comprar"
+msgstr ""
+
+#: app/forms.py:98 app/templates/_macros.html:10
+#: app/templates/admin/ofertas.html:35 app/templates/index.html:31
+msgid "Alquiler"
+msgstr ""
+
+#: app/forms.py:99 app/templates/admin/ofertas.html:37
+#: app/templates/base.html:69
+msgid "Compartir"
+msgstr ""
+
+#: app/forms.py:100 app/templates/base.html:79
+msgid "Booking"
+msgstr ""
+
+#: app/forms.py:101
+msgid "Selecciona el tipo de transacción"
+msgstr ""
+
+#: app/forms.py:103 app/forms.py:238 app/templates/main/alquiler.html:117
+msgid "Tipo de alquiler"
+msgstr ""
+
+#: app/forms.py:105 app/forms.py:248
+msgid "Estado de la propiedad"
+msgstr ""
+
+#: app/forms.py:108 app/templates/main/alquiler.html:144
+#: app/templates/main/compartir.html:138 app/templates/main/venta.html:138
+msgid "Tamaño (m²)"
+msgstr ""
+
+#: app/forms.py:108
+msgid "El tamaño es requerido"
+msgstr ""
+
+#: app/forms.py:109
+msgid "N.º Habitaciones"
+msgstr ""
+
+#: app/forms.py:110
+msgid "N.º Baños"
+msgstr ""
+
+#: app/forms.py:113
+msgid "Características de la vivienda"
+msgstr ""
+
+#: app/forms.py:119
+msgid "Características de la oficina"
+msgstr ""
+
+#: app/forms.py:125
+msgid "Características de locales y naves"
+msgstr ""
+
+#: app/forms.py:131
+msgid "Características del terreno"
+msgstr ""
+
+#: app/forms.py:138
+msgid "Imágenes"
+msgstr ""
+
+#: app/forms.py:139
+msgid "Solo se permiten imágenes"
+msgstr ""
+
+#: app/forms.py:141
+msgid "Videos"
+msgstr ""
+
+#: app/forms.py:142
+msgid "Solo se permiten videos"
+msgstr ""
+
+#: app/forms.py:145
+msgid "Destacar oferta"
+msgstr ""
+
+#: app/forms.py:146 app/templates/admin/ofertas.html:59
+msgid "Estado de la oferta"
+msgstr ""
+
+#: app/forms.py:147 app/templates/admin/ofertas.html:63
+msgid "Abierta"
+msgstr ""
+
+#: app/forms.py:148 app/templates/admin/ofertas.html:65
+msgid "Activada"
+msgstr ""
+
+#: app/forms.py:149 app/templates/admin/ofertas.html:67
+msgid "Desactivada"
+msgstr ""
+
+#: app/forms.py:150 app/templates/admin/ofertas.html:69
+msgid "Caducada"
+msgstr ""
+
+#: app/forms.py:153
+msgid "Fecha de baja programada"
+msgstr ""
+
+#: app/forms.py:158 app/templates/admin/buzon.html:45
+#: app/templates/admin/dashboard.html:50 app/templates/admin/usuarios.html:41
+msgid "Nombre"
+msgstr ""
+
+#: app/forms.py:169
+msgid "Mensaje"
+msgstr ""
+
+#: app/forms.py:170
+msgid "El mensaje es requerido"
+msgstr ""
+
+#: app/forms.py:174
+msgid "Fecha de entrada"
+msgstr ""
+
+#: app/forms.py:175
+msgid "Fecha de salida"
+msgstr ""
+
+#: app/forms.py:184
+msgid "Categoría"
+msgstr ""
+
+#: app/forms.py:186
+msgid "Posible fraude"
+msgstr ""
+
+#: app/forms.py:187
+msgid "Información incorrecta"
+msgstr ""
+
+#: app/forms.py:188
+msgid "Spam"
+msgstr ""
+
+#: app/forms.py:189
+msgid "Otro"
+msgstr ""
+
+#: app/forms.py:190
+msgid "Selecciona una categoría"
+msgstr ""
+
+#: app/forms.py:194
+msgid "Oferta ID"
+msgstr ""
+
+#: app/forms.py:195
+msgid "Adjunto (opcional)"
+msgstr ""
+
+#: app/forms.py:196
+msgid "Solo se permiten imágenes o PDF"
+msgstr ""
+
+#: app/forms.py:202
+msgid "Búsqueda"
+msgstr ""
+
+#: app/forms.py:203 app/templates/admin/dashboard.html:84
+#: app/templates/admin/ofertas.html:22 app/templates/admin/ofertas.html:125
+msgid "Ubicación"
+msgstr ""
+
+#: app/forms.py:204 app/templates/index.html:49
+msgid "Tipo"
+msgstr ""
+
+#: app/forms.py:205 app/forms.py:214
+msgid "Cualquiera"
+msgstr ""
+
+#: app/forms.py:206 app/templates/index.html:50
+msgid "Apartamento"
+msgstr ""
+
+#: app/forms.py:207 app/templates/index.html:51
+msgid "Casa"
+msgstr ""
+
+#: app/forms.py:208
+msgid "Local comercial"
+msgstr ""
+
+#: app/forms.py:209 app/templates/index.html:53
+msgid "Terreno"
+msgstr ""
+
+#: app/forms.py:211 app/forms.py:253
+msgid "Precio mínimo (FCFA)"
+msgstr ""
+
+#: app/forms.py:212 app/forms.py:254
+msgid "Precio máximo (FCFA)"
+msgstr ""
+
+#: app/forms.py:213 app/forms.py:268 app/templates/main/alquiler.html:161
+#: app/templates/main/compartir.html:155
+#: app/templates/main/oferta_detalle.html:491 app/templates/main/venta.html:155
+msgid "Habitaciones"
+msgstr ""
+
+#: app/forms.py:222
+msgid "Con parking"
+msgstr ""
+
+#: app/forms.py:223 app/templates/_macros.html:26
+msgid "Amueblado"
+msgstr ""
+
+#: app/forms.py:224
+msgid "Admite mascotas"
+msgstr ""
+
+#: app/forms.py:225
+msgid "Obra nueva"
+msgstr ""
+
+#: app/forms.py:235
+msgid "Barrio"
+msgstr ""
+
+#: app/forms.py:257
+msgid "Tamaño mínimo (m²)"
+msgstr ""
+
+#: app/forms.py:258
+msgid "Tamaño máximo (m²)"
+msgstr ""
+
+#: app/forms.py:263 app/templates/main/alquiler.html:156
+#: app/templates/main/compartir.html:150 app/templates/main/venta.html:150
+msgid "Tipo de vivienda"
+msgstr ""
+
+#: app/forms.py:271 app/templates/main/alquiler.html:166
+#: app/templates/main/compartir.html:160
+#: app/templates/main/oferta_detalle.html:501 app/templates/main/venta.html:160
+msgid "Baños"
+msgstr ""
+
+#: app/forms.py:277 app/forms.py:293 app/forms.py:309 app/forms.py:319
+#: app/templates/main/alquiler.html:171 app/templates/main/alquiler.html:190
+#: app/templates/main/alquiler.html:209 app/templates/main/compartir.html:165
+#: app/templates/main/compartir.html:184 app/templates/main/venta.html:165
+#: app/templates/main/venta.html:184 app/templates/main/venta.html:203
+#: app/templates/main/venta.html:217
+msgid "Características"
+msgstr ""
+
+#: app/forms.py:287 app/forms.py:303 app/templates/main/alquiler.html:185
+#: app/templates/main/alquiler.html:204 app/templates/main/compartir.html:179
+#: app/templates/main/venta.html:179 app/templates/main/venta.html:198
+msgid "Tipología"
+msgstr ""
+
+#: app/forms.py:335 app/templates/user/perfil.html:257
+msgid "Sobre mí"
+msgstr ""
+
+#: app/forms.py:338
+msgid "Avatar"
+msgstr ""
+
+#: app/forms.py:339
+msgid "Solo se permiten imágenes (jpg, png, webp)"
+msgstr ""
+
+#: app/forms.py:344
+msgid "Fecha de inicio"
+msgstr ""
+
+#: app/forms.py:345
+msgid "La fecha de inicio es requerida"
+msgstr ""
+
+#: app/forms.py:347
+msgid "Fecha de fin"
+msgstr ""
+
+#: app/forms.py:348
+msgid "La fecha de fin es requerida"
+msgstr ""
+
+#: app/forms.py:350
+msgid "Notas (Opcional)"
+msgstr ""
+
+#: app/forms.py:356
+msgid "La fecha de fin debe ser posterior a la fecha de inicio."
+msgstr ""
+
+#: app/translations_dummy.py:7
+msgid "bien"
+msgstr ""
+
+#: app/translations_dummy.py:8
+msgid "muy_bien"
+msgstr ""
+
+#: app/translations_dummy.py:9
+msgid "obra_nueva"
+msgstr ""
+
+#: app/translations_dummy.py:10
+msgid "a_reformar"
+msgstr ""
+
+#: app/translations_dummy.py:13
+msgid "admin"
+msgstr ""
+
+#: app/translations_dummy.py:14
+msgid "usuario"
+msgstr ""
+
+#: app/translations_dummy.py:15
+msgid "agencia"
+msgstr ""
+
+#: app/translations_dummy.py:16
+msgid "particular"
+msgstr ""
+
+#: app/translations_dummy.py:17
+msgid "visitante"
+msgstr ""
+
+#: app/translations_dummy.py:20
+msgid "venta"
+msgstr ""
+
+#: app/translations_dummy.py:21
+msgid "alquiler"
+msgstr ""
+
+#: app/translations_dummy.py:22
+msgid "compartir"
+msgstr ""
+
+#: app/translations_dummy.py:23
+msgid "booking"
+msgstr ""
+
+#: app/translations_dummy.py:26
+msgid "vivienda"
+msgstr ""
+
+#: app/translations_dummy.py:27
+msgid "locales_naves"
+msgstr ""
+
+#: app/translations_dummy.py:28
+msgid "oficinas"
+msgstr ""
+
+#: app/translations_dummy.py:29
+msgid "terrenos"
+msgstr ""
+
+#: app/translations_dummy.py:32
+msgid "chalet"
+msgstr ""
+
+#: app/translations_dummy.py:33
+msgid "apartamento"
+msgstr ""
+
+#: app/translations_dummy.py:34
+msgid "piso"
+msgstr ""
+
+#: app/translations_dummy.py:35
+msgid "estudio"
+msgstr ""
+
+#: app/translations_dummy.py:36
+msgid "duplex"
+msgstr ""
+
+#: app/translations_dummy.py:37
+msgid "atico"
+msgstr ""
+
+#: app/translations_dummy.py:40
+msgid "comercial"
+msgstr ""
+
+#: app/translations_dummy.py:41
+msgid "ocio"
+msgstr ""
+
+#: app/translations_dummy.py:42
+msgid "eventos"
+msgstr ""
+
+#: app/translations_dummy.py:43
+msgid "industrial"
+msgstr ""
+
+#: app/translations_dummy.py:44
+msgid "almacenamiento"
+msgstr ""
+
+#: app/translations_dummy.py:45
+msgid "cerradas"
+msgstr ""
+
+#: app/translations_dummy.py:46
+msgid "abiertas"
+msgstr ""
+
+#: app/translations_dummy.py:47
+msgid "mixtas"
+msgstr ""
+
+#: app/translations_dummy.py:48
+msgid "coworking"
+msgstr ""
+
+#: app/translations_dummy.py:51
+msgid "amueblado"
+msgstr ""
+
+#: app/translations_dummy.py:52
+msgid "sin_amueblar"
+msgstr ""
+
+#: app/translations_dummy.py:53
+msgid "con_electrodomesticos"
+msgstr ""
+
+#: app/translations_dummy.py:54
+msgid "sin_electrodomesticos"
+msgstr ""
+
+#: app/translations_dummy.py:55
+msgid "accesibilidad"
+msgstr ""
+
+#: app/translations_dummy.py:56
+msgid "ascensor"
+msgstr ""
+
+#: app/translations_dummy.py:57
+msgid "internet"
+msgstr ""
+
+#: app/translations_dummy.py:58
+msgid "aire_acondicionado"
+msgstr ""
+
+#: app/translations_dummy.py:59
+msgid "jardin"
+msgstr ""
+
+#: app/translations_dummy.py:60
+msgid "parking"
+msgstr ""
+
+#: app/translations_dummy.py:61
+msgid "terraza"
+msgstr ""
+
+#: app/translations_dummy.py:62
+msgid "piscina"
+msgstr ""
+
+#: app/translations_dummy.py:65
+msgid "acceso_rodado"
+msgstr ""
+
+#: app/translations_dummy.py:66
+msgid "sin_acceso_rodado"
+msgstr ""
+
+#: app/translations_dummy.py:67
+msgid "terreno_llano"
+msgstr ""
+
+#: app/translations_dummy.py:68
+msgid "terreno_montanoso"
+msgstr ""
+
+#: app/translations_dummy.py:69
+msgid "terreno_pantanoso"
+msgstr ""
+
+#: app/translations_dummy.py:70
+msgid "suministro_electrico"
+msgstr ""
+
+#: app/translations_dummy.py:71
+msgid "cerca_centro"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:609 app/translations_dummy.py:74
+msgid "Anunciante"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:559 app/translations_dummy.py:75
+msgid "mes"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:561 app/translations_dummy.py:76
+msgid "Precio total"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:571
+#: app/templates/main/oferta_detalle.html:578 app/translations_dummy.py:77
+msgid "Guardar en favoritos"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:571 app/translations_dummy.py:78
+msgid "Guardado"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:448 app/translations_dummy.py:79
+msgid "más"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:588 app/translations_dummy.py:80
+msgid "Enviar mensaje"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:597 app/translations_dummy.py:81
+msgid "Contactar por WhatsApp"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:625 app/translations_dummy.py:82
+msgid "Reservar Alojamiento"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:656 app/translations_dummy.py:83
+msgid "Inicia sesión para realizar una reserva"
+msgstr ""
+
+#: app/templates/auth/login.html:9 app/templates/main/oferta_detalle.html:657
+#: app/translations_dummy.py:84
+msgid "Iniciar Sesión"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:651 app/translations_dummy.py:85
+msgid "Solicitar Reserva"
+msgstr ""
+
+#: app/templates/main/contacto.html:155 app/translations_dummy.py:86
+msgid "Estás contactando por:"
+msgstr ""
+
+#: app/templates/main/contacto.html:199 app/translations_dummy.py:87
+msgid "Formulario de Contacto"
+msgstr ""
+
+#: app/templates/main/contacto.html:200 app/translations_dummy.py:88
+msgid ""
+"Envía tus datos y el anunciante se pondrá en contacto contigo lo antes "
+"posible."
+msgstr ""
+
+#: app/templates/main/contacto.html:186 app/translations_dummy.py:89
+msgid ""
+"Protección de datos garantizada de acuerdo a las políticas de seguridad "
+"de EquaHome."
+msgstr ""
+
+#: app/templates/main/contacto.html:192 app/translations_dummy.py:90
+msgid "Anuncio verificado por el equipo de administración."
+msgstr ""
+
+#: app/templates/main/contacto.html:281 app/templates/main/contacto.html:285
+#: app/translations_dummy.py:91
+msgid "opcional"
+msgstr ""
+
+#: app/templates/main/contacto.html:302 app/translations_dummy.py:92
+msgid "O si lo prefieres"
+msgstr ""
+
+#: app/templates/main/contacto.html:295 app/translations_dummy.py:93
+msgid "Volver"
+msgstr ""
+
+#: app/templates/main/contacto.html:308 app/translations_dummy.py:94
+msgid "Contactar directamente por WhatsApp"
+msgstr ""
+
+#: app/main/routes.py:99
+msgid "La funcionalidad de Booking estará disponible próximamente."
+msgstr ""
+
+#: app/templates/_macros.html:7 app/templates/index.html:119
+#: app/templates/main/oferta_detalle.html:421 app/templates/main/venta.html:253
+msgid "Destacado"
+msgstr ""
+
+#: app/templates/_macros.html:20 app/templates/index.html:150
+#: app/templates/main/venta.html:277
+msgid "hab"
+msgstr ""
+
+#: app/templates/_macros.html:21
+msgid "baños"
+msgstr ""
+
+#: app/templates/_macros.html:25 app/templates/index.html:168
+msgid "Parking"
+msgstr ""
+
+#: app/templates/_macros.html:27
+msgid "Mascotas"
+msgstr ""
+
+#: app/templates/_macros.html:32 app/templates/index.html:174
+#: app/templates/main/alquiler.html:255 app/templates/main/compartir.html:216
+#: app/templates/main/oferta_detalle.html:696 app/templates/main/venta.html:292
+msgid "Ver detalles"
+msgstr ""
+
+#: app/templates/_macros.html:44
+msgid "Anterior"
+msgstr ""
+
+#: app/templates/_macros.html:60
+msgid "Siguiente"
+msgstr ""
+
+#: app/templates/base.html:43 app/templates/main/oferta_detalle.html:404
+msgid "Inicio"
+msgstr ""
+
+#: app/templates/base.html:51 app/templates/main/oferta_detalle.html:409
+msgid "Alquilar"
+msgstr ""
+
+#: app/templates/base.html:89
+msgid "Admin"
+msgstr ""
+
+#: app/templates/base.html:118 app/templates/base.html:178
+#: app/templates/user/perfil.html:292
+msgid "Favoritos"
+msgstr ""
+
+#: app/templates/base.html:125
+msgid "Cerrar sesión"
+msgstr ""
+
+#: app/templates/base.html:127
+msgid "Iniciar sesión"
+msgstr ""
+
+#: app/templates/base.html:128 app/templates/base.html:191
+#: app/templates/index.html:255
+msgid "Crear cuenta"
+msgstr ""
+
+#: app/templates/base.html:168
+msgid ""
+"Plataforma inmobiliaria para Guinea Ecuatorial — compra, venta y\n"
+"                        alquiler."
+msgstr ""
+
+#: app/templates/base.html:174
+msgid "Para particulares"
+msgstr ""
+
+#: app/templates/base.html:176
+msgid "Buscar alquiler"
+msgstr ""
+
+#: app/templates/base.html:177
+msgid "Buscar vivienda"
+msgstr ""
+
+#: app/templates/base.html:184
+msgid "Para agencias"
+msgstr ""
+
+#: app/templates/base.html:187
+msgid "Panel de administración"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:34 app/templates/admin/ofertas.html:109
+#: app/templates/base.html:188
+msgid "Nueva Oferta"
+msgstr ""
+
+#: app/templates/base.html:190
+msgid "Acceso agencias"
+msgstr ""
+
+#: app/templates/base.html:198
+msgid "Legal"
+msgstr ""
+
+#: app/templates/base.html:200
+msgid "Términos"
+msgstr ""
+
+#: app/templates/base.html:201
+msgid "Privacidad"
+msgstr ""
+
+#: app/templates/index.html:3 app/templates/index.html:11
+msgid "Encuentra tu próximo hogar en Guinea Ecuatorial"
+msgstr ""
+
+#: app/templates/index.html:12
+msgid ""
+"Explora miles de propiedades verificadas. Compra, vende o alquila con "
+"total\n"
+"                confianza."
+msgstr ""
+
+#: app/templates/admin/ofertas.html:33 app/templates/index.html:24
+msgid "Venta"
+msgstr ""
+
+#: app/templates/index.html:44
+msgid "Ciudad, zona..."
+msgstr ""
+
+#: app/templates/index.html:52
+msgid "Local"
+msgstr ""
+
+#: app/templates/index.html:57
+msgid "Precio máx."
+msgstr ""
+
+#: app/templates/admin/ofertas.html:84 app/templates/index.html:66
+msgid "Buscar"
+msgstr ""
+
+#: app/templates/index.html:76
+msgid "propiedades en alquiler"
+msgstr ""
+
+#: app/templates/index.html:80
+msgid "propiedades en venta"
+msgstr ""
+
+#: app/templates/index.html:87 app/templates/index.html:200
+msgid "Propiedades verificadas"
+msgstr ""
+
+#: app/templates/index.html:97
+msgid "Propiedades Destacadas"
+msgstr ""
+
+#: app/templates/index.html:99
+msgid "Ver todas las propiedades"
+msgstr ""
+
+#: app/templates/index.html:190
+msgid "Por qué elegir EquaHome?"
+msgstr ""
+
+#: app/templates/index.html:201
+msgid "Todas las propiedades son revisadas y verificadas antes de publicarse"
+msgstr ""
+
+#: app/templates/index.html:213
+msgid "Atención personalizada"
+msgstr ""
+
+#: app/templates/index.html:214
+msgid "Equipo dedicado para ayudarte en cada paso del proceso"
+msgstr ""
+
+#: app/templates/index.html:224
+msgid "Proceso seguro y transparente"
+msgstr ""
+
+#: app/templates/index.html:225
+msgid "Transacciones seguras con total transparencia en cada etapa"
+msgstr ""
+
+#: app/templates/index.html:236
+msgid "Agencias certificadas"
+msgstr ""
+
+#: app/templates/index.html:237
+msgid "Trabajamos solo con agencias y propietarios verificados"
+msgstr ""
+
+#: app/templates/index.html:247
+msgid "¿Eres propietario o agencia?"
+msgstr ""
+
+#: app/templates/index.html:248
+msgid "Publica tus propiedades y llega a miles de potenciales clientes."
+msgstr ""
+
+#: app/templates/index.html:252
+msgid "Publicar oferta"
+msgstr ""
+
+#: app/templates/index.html:256
+msgid "Acceder"
+msgstr ""
+
+#: app/templates/admin/buzon.html:9
+msgid "Buzón de Contactos"
+msgstr ""
+
+#: app/templates/admin/buzon.html:10
+msgid "Exportar CSV"
+msgstr ""
+
+#: app/templates/admin/buzon.html:18 app/templates/admin/buzon.html:49
+#: app/templates/admin/dashboard.html:86 app/templates/admin/ofertas.html:128
+#: app/templates/admin/usuarios.html:46 app/templates/main/alquiler.html:129
+#: app/templates/main/compartir.html:123
+#: app/templates/main/oferta_detalle.html:512 app/templates/main/venta.html:123
+msgid "Estado"
+msgstr ""
+
+#: app/templates/admin/buzon.html:20 app/templates/admin/ofertas.html:31
+#: app/templates/admin/ofertas.html:61 app/templates/admin/usuarios.html:19
+msgid "Todos"
+msgstr ""
+
+#: app/templates/admin/buzon.html:22
+msgid "Pendiente"
+msgstr ""
+
+#: app/templates/admin/buzon.html:24
+msgid "Resuelto"
+msgstr ""
+
+#: app/templates/admin/buzon.html:28
+msgid "Desde"
+msgstr ""
+
+#: app/templates/admin/buzon.html:32 app/templates/admin/usuarios.html:28
+msgid "Filtrar"
+msgstr ""
+
+#: app/templates/admin/buzon.html:33 app/templates/admin/usuarios.html:29
+#: app/templates/main/alquiler.html:96 app/templates/main/compartir.html:96
+#: app/templates/main/venta.html:96
+msgid "Limpiar"
+msgstr ""
+
+#: app/templates/admin/buzon.html:44 app/templates/admin/dashboard.html:49
+msgid "Fecha"
+msgstr ""
+
+#: app/templates/admin/buzon.html:48 app/templates/admin/ofertas.html:127
+msgid "Propiedad"
+msgstr ""
+
+#: app/templates/admin/buzon.html:50 app/templates/admin/dashboard.html:87
+msgid "Acciones"
+msgstr ""
+
+#: app/templates/admin/buzon.html:75
+msgid "Resolver"
+msgstr ""
+
+#: app/templates/admin/buzon.html:78
+msgid "Ver mensaje"
+msgstr ""
+
+#: app/templates/admin/buzon.html:90
+msgid "No hay contactos"
+msgstr ""
+
+#: app/templates/admin/buzon.html:91
+msgid "Los contactos recibidos aparecerán aquí."
+msgstr ""
+
+#: app/templates/admin/dashboard.html:7
+msgid "Panel de Administración"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:13
+msgid "Total Ofertas"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:17
+msgid "Contactos"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:21 app/templates/user/perfil.html:320
+msgid "Quejas"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:25
+msgid "Usuarios"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:32
+msgid "Acciones Rápidas"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:35
+msgid "Gestionar Ofertas"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:36
+msgid "Ver Buzón"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:37
+msgid "Ver Usuarios"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:38
+msgid "Ver Reservas"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:45
+msgid "Últimos Contactos"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:52 app/templates/admin/oferta_form.html:3
+msgid "Oferta"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:79
+msgid "Ofertas Recientes"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:85
+msgid "Precio"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:102
+msgid "Editar"
+msgstr ""
+
+#: app/templates/admin/dashboard.html:105
+msgid "Ver"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:4
+msgid "Gestión de Ofertas"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:10
+msgid "Buscador de ofertas"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:45
+msgid "Todas"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:47
+msgid "Vivienda"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:49
+msgid "Locales y Naves"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:51
+msgid "Oficinas"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:53
+msgid "Terrenos"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:82
+msgid "Limpiar filtros"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:94
+msgid "Borrar"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:97
+msgid "Activar"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:101
+msgid "Desactivar"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:107
+msgid "Exportar CSV / Excel"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:123
+msgid "Título / Nombre"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:126
+msgid "Transacción"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:129
+msgid "Fecha de alta"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:131
+msgid "Baja programada"
+msgstr ""
+
+#: app/templates/admin/ofertas.html:133
+msgid "Última mod."
+msgstr ""
+
+#: app/templates/admin/ofertas.html:134
+msgid "Staff"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:9
+msgid "Gestión de Usuarios"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:17 app/templates/admin/usuarios.html:44
+msgid "Rol"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:21
+msgid "Administrador"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:23
+msgid "Agencia"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:25
+msgid "Particular"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:40
+msgid "ID"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:45
+msgid "Fecha de Registro"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:64
+msgid "Activo"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:75
+msgid "No hay usuarios"
+msgstr ""
+
+#: app/templates/admin/usuarios.html:76
+msgid "Los usuarios registrados aparecerán aquí."
+msgstr ""
+
+#: app/templates/auth/login.html:16
+msgid "Tu nombre de usuario"
+msgstr ""
+
+#: app/templates/auth/login.html:41
+msgid "Entrar"
+msgstr ""
+
+#: app/templates/auth/login.html:46
+msgid "¿No tienes cuenta? Regístrate"
+msgstr ""
+
+#: app/templates/auth/register.html:9
+msgid "Crear Cuenta"
+msgstr ""
+
+#: app/templates/auth/register.html:26
+msgid "Ej: juan_garcia"
+msgstr ""
+
+#: app/templates/auth/register.html:75
+msgid "Registrarse"
+msgstr ""
+
+#: app/templates/auth/register.html:80
+msgid ""
+"¿Ya tienes\n"
+"                cuenta? Inicia sesión"
+msgstr ""
+
+#: app/templates/errors/403.html:3
+msgid "403 - Acceso denegado"
+msgstr ""
+
+#: app/templates/errors/403.html:9
+msgid "Acceso denegado"
+msgstr ""
+
+#: app/templates/errors/403.html:10
+msgid "No tienes permisos para acceder a esta página."
+msgstr ""
+
+#: app/templates/errors/403.html:11 app/templates/errors/404.html:11
+#: app/templates/errors/500.html:11
+msgid "Volver al inicio"
+msgstr ""
+
+#: app/templates/errors/404.html:3
+msgid "404 - Página no encontrada"
+msgstr ""
+
+#: app/templates/errors/404.html:9
+msgid "Página no encontrada"
+msgstr ""
+
+#: app/templates/errors/404.html:10
+msgid "Lo sentimos, la página que buscas no existe."
+msgstr ""
+
+#: app/templates/errors/500.html:3
+msgid "500 - Error interno"
+msgstr ""
+
+#: app/templates/errors/500.html:9
+msgid "Error del servidor"
+msgstr ""
+
+#: app/templates/errors/500.html:10
+msgid "Lo sentimos, algo salió mal. Estamos trabajando para solucionarlo."
+msgstr ""
+
+#: app/templates/main/alquiler.html:3 app/templates/main/alquiler.html:84
+msgid "Alquiler de Propiedades"
+msgstr ""
+
+#: app/templates/main/alquiler.html:85 app/templates/main/compartir.html:85
+#: app/templates/main/venta.html:85
+msgid "propiedades disponibles"
+msgstr ""
+
+#: app/templates/main/alquiler.html:94 app/templates/main/compartir.html:94
+#: app/templates/main/venta.html:94
+msgid "Filtrar resultados"
+msgstr ""
+
+#: app/templates/main/alquiler.html:112 app/templates/main/compartir.html:112
+#: app/templates/main/venta.html:112
+msgid "Escribir barrio..."
+msgstr ""
+
+#: app/templates/main/alquiler.html:137 app/templates/main/alquiler.html:146
+#: app/templates/main/compartir.html:131 app/templates/main/compartir.html:140
+#: app/templates/main/venta.html:131 app/templates/main/venta.html:140
+msgid "Mínimo"
+msgstr ""
+
+#: app/templates/main/alquiler.html:138 app/templates/main/alquiler.html:147
+#: app/templates/main/compartir.html:132 app/templates/main/compartir.html:141
+#: app/templates/main/venta.html:132 app/templates/main/venta.html:141
+msgid "Máximo"
+msgstr ""
+
+#: app/templates/main/alquiler.html:153 app/templates/main/compartir.html:147
+#: app/templates/main/venta.html:147
+msgid "Filtros de Vivienda"
+msgstr ""
+
+#: app/templates/main/alquiler.html:182 app/templates/main/venta.html:176
+msgid "Filtros de Locales y Naves"
+msgstr ""
+
+#: app/templates/main/alquiler.html:201 app/templates/main/compartir.html:176
+#: app/templates/main/venta.html:195
+msgid "Filtros de Oficinas"
+msgstr ""
+
+#: app/templates/main/alquiler.html:220
+msgid "Filtros de Solares / Terrenos"
+msgstr ""
+
+#: app/templates/main/alquiler.html:223
+msgid "Características del Terreno"
+msgstr ""
+
+#: app/templates/main/alquiler.html:234 app/templates/main/compartir.html:195
+#: app/templates/main/venta.html:228
+msgid "Aplicar filtros"
+msgstr ""
+
+#: app/templates/main/alquiler.html:243 app/templates/main/compartir.html:204
+#: app/templates/main/venta.html:237
+msgid "Mostrar filtros"
+msgstr ""
+
+#: app/templates/main/alquiler.html:269 app/templates/main/compartir.html:230
+#: app/templates/main/venta.html:311
+msgid "No se encontraron propiedades"
+msgstr ""
+
+#: app/templates/main/alquiler.html:270 app/templates/main/compartir.html:231
+#: app/templates/main/venta.html:312
+msgid "Intenta ajustar los filtros de búsqueda."
+msgstr ""
+
+#: app/templates/main/alquiler.html:271 app/templates/main/compartir.html:232
+#: app/templates/main/venta.html:313
+msgid "Ver todas"
+msgstr ""
+
+#: app/templates/main/compartir.html:3 app/templates/main/compartir.html:84
+msgid "Compartir Vivienda"
+msgstr ""
+
+#: app/templates/main/contacto.html:3
+msgid "Contactar Anunciante"
+msgstr ""
+
+#: app/templates/main/contacto.html:208
+msgid "Escribe tu nombre..."
+msgstr ""
+
+#: app/templates/main/contacto.html:226
+msgid "correo@ejemplo.com"
+msgstr ""
+
+#: app/templates/main/contacto.html:244
+msgid "Ej. +240 222 333 444"
+msgstr ""
+
+#: app/templates/main/contacto.html:262
+msgid ""
+"Hola, estoy interesado en esta propiedad y me gustaría obtener más "
+"información..."
+msgstr ""
+
+#: app/templates/main/contacto.html:293
+msgid "Enviar Mensaje"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:481
+msgid "Superficie"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:528
+msgid "Características y Equipamiento"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:545
+msgid "Ubicación en el Mapa"
+msgstr ""
+
+#: app/templates/main/oferta_detalle.html:669
+msgid "Propiedades similares"
+msgstr ""
+
+#: app/templates/main/venta.html:3 app/templates/main/venta.html:84
+msgid "Venta de Propiedades"
+msgstr ""
+
+#: app/templates/main/venta.html:214
+msgid "Filtros de Terrenos"
+msgstr ""
+
+#: app/templates/user/perfil.html:3
+msgid "Mi Perfil"
+msgstr ""
+
+#: app/templates/user/perfil.html:233
+msgid "Correo Electrónico"
+msgstr ""
+
+#: app/templates/user/perfil.html:271
+msgid "Miembro desde"
+msgstr ""
+
+#: app/templates/user/perfil.html:305
+msgid "Mensajes"
+msgstr ""
+
+#: app/templates/user/perfil.html:327
+msgid "Gestión de mi cuenta"
+msgstr ""
+
+#: app/templates/user/perfil.html:336 app/templates/user/reservas.html:3
+#: app/templates/user/reservas.html:127
+msgid "Mis Reservas"
+msgstr ""
+
+#: app/templates/user/perfil.html:343
+msgid "Ver mis Favoritos"
+msgstr ""
+
+#: app/templates/user/perfil.html:350
+msgid "Gestionar mis Quejas"
+msgstr ""
+
+#: app/templates/user/perfil.html:358
+msgid "Explorar Alquileres"
+msgstr ""
+
+#: app/templates/user/perfil.html:366
+msgid "Explorar Compras"
+msgstr ""
+
+#: app/templates/user/perfil.html:372
+msgid "Editar mi perfil"
+msgstr ""
+
+#: app/templates/user/perfil.html:404
+msgid "Guardar Cambios"
+msgstr ""
+
+#: app/templates/user/quejas.html:10
+msgid "Mis Quejas"
+msgstr ""
+
+#: app/templates/user/quejas.html:13
+msgid "Nueva Queja"
+msgstr ""
+
+#: app/templates/user/quejas.html:50
+msgid "Formatos: JPG, PNG, PDF (máx 16MB)"
+msgstr ""
+
+#: app/templates/user/quejas.html:53
+msgid "Enviar Queja"
+msgstr ""
+
+#: app/templates/user/quejas.html:58
+msgid "Mis Quejas Enviadas"
+msgstr ""
+
+#: app/templates/user/quejas.html:76
+msgid "Respuesta del administrador:"
+msgstr ""
+
+#: app/templates/user/quejas.html:85
+msgid "No has enviado ninguna queja todavía."
+msgstr ""
+
+#: app/templates/user/reservas.html:178
+msgid "Mis notas:"
+msgstr ""
+
+#: app/templates/user/reservas.html:184
+msgid "Solicitada el"
+msgstr ""
+
+#: app/templates/user/reservas.html:219
+msgid "No tienes reservas todavía"
+msgstr ""
+
+#: app/templates/user/reservas.html:220
+msgid "Explora nuestras ofertas y encuentra tu próximo alojamiento ideal."
+msgstr ""
+
+#: app/templates/user/reservas.html:222
+msgid "Explorar Ofertas"
+msgstr ""
+
